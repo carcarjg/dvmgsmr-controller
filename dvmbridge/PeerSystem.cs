@@ -189,5 +189,10 @@ namespace dvmbridge
         {
             /* stub */
         }
-    } // public class PeerSystem
+
+		protected override void KeyResponse(object sender, KeyResponseEvent e)
+		{
+			throw new NotImplementedException();
+		}
+	} // public class PeerSystem
 } // namespace dvmbridge
