@@ -211,6 +211,11 @@ namespace dvmbridge
         /// </summary>
         public int Slot = 1;
 
+        /// <summary>
+        /// SerialPort to talk to Control Head
+        /// </summary>
+        public string SerialPort = "Com1";
+
         /*
         ** Methods
         */

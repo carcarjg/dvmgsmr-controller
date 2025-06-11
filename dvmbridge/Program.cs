@@ -29,6 +29,7 @@ using FneLogLevel = fnecore.LogLevel;
 using fnecore.Utility;
 
 using NAudio.Wave;
+using System.IO.Ports;
 
 namespace dvmbridge
 {
@@ -61,11 +62,11 @@ namespace dvmbridge
         /*
         ** Properties
         */
-
-        /// <summary>
-        /// Gets the instance of the <see cref="ConfigurationObject"/>.
-        /// </summary>
-        public static ConfigurationObject Configuration => config;
+        internal SerialPort Port { get; set; }
+		/// <summary>
+		/// Gets the instance of the <see cref="ConfigurationObject"/>.
+		/// </summary>
+		public static ConfigurationObject Configuration => config;
 
         /// <summary>
         /// Gets the <see cref="fnecore.LogLevel"/>.
@@ -415,8 +416,10 @@ namespace dvmbridge
             }
             catch (Exception e)
             {
-                Log.Logger.Error(e, "An unhandled exception occurred"); // TODO: make this less terse
+                Log.Logger.Error(e, "An unhandled exception occurred"); // TODO: make this less terse.. Or not 
             }
-        }
+
+			
+		}
     } // public class Program
 } // namespace dvmbridge
