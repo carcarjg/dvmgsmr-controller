@@ -11,4 +11,8 @@
     <PackageReference Include="SerialPortLib" Version="1.2.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HeadComLib\HeadComLib.csproj" />
+  </ItemGroup>
+
 </Project>
