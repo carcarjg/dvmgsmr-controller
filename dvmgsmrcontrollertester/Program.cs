@@ -1,6 +1,7 @@
 ﻿using SerialPortLib;
 using System.IO.Ports;
 using System.Timers;
+using HeadComLib;
 
 namespace dvmgsmrcontrollertester 
 {
