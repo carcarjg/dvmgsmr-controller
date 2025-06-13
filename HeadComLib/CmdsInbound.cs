@@ -44,5 +44,30 @@
 		public const string IOPb15 = "at#b15";
 		//Inbound cmd Button16
 		public const string IOPb16 = "at#b16";
+
+		//Inbound cmd KeyPad 1
+		public const string IOPkp1 = "at#kp1";
+		//Inbound cmd KeyPad 2
+		public const string IOPkp2 = "at#kp2";
+		//Inbound cmd KeyPad 3
+		public const string IOPkp3 = "at#kp3";
+		//Inbound cmd KeyPad 4
+		public const string IOPkp4 = "at#kp4";
+		//Inbound cmd KeyPad 5
+		public const string IOPkp5 = "at#kp5";
+		//Inbound cmd KeyPad 6
+		public const string IOPkp6 = "at#kp6";
+		//Inbound cmd KeyPad 7
+		public const string IOPkp7 = "at#kp7";
+		//Inbound cmd KeyPad 8
+		public const string IOPkp8 = "at#kp8";
+		//Inbound cmd KeyPad 9
+		public const string IOPkp9 = "at#kp9";
+		//Inbound cmd KeyPad 0
+		public const string IOPkp0 = "at#kp0";
+		//Inbound cmd KeyPad Check
+		public const string IOPkpCheck = "at#chk";
+		//Inbound cmd KeyPad D
+		public const string IOPkpCross = "at#crs";
 	}
 }

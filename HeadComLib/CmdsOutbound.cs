@@ -7,8 +7,11 @@
 		public const string OOPDEF = "at#att";
 
 		public const string OOPLine0 = "at$l00";
+
 		public const string OOPLine1 = "at$l01";
+
 		public const string OOPLine2 = "at$l02";
+
 		public const string OOPLine3 = "at$l03";
 
 		//Outbound cmd to flash Emrg button led
@@ -52,17 +55,38 @@
 
 		//SetHeadcode
 		public const string OOPHeadcode = "at$hdc";
+
+		public const string OOPHcb0 = "at$hc0";
+
+		public const string OOPHcb1 = "at$hc1";
+
+		public const string OOPHcb2 = "at$hc2";
+
+		public const string OOPHcb3 = "at$hc3";
+
+		public const string OOPHcb4 = "at$hc4";
+
+		public const string OOPHcb5 = "at$hc5";
+
 		//SetChannel
 		public const string OOPChan = "at$cha";
+
 		//SetRXRID
 		public const string OOPRxRID = "at$rid";
+
 		//SetRXMode
 		public const string OOPRxCall = "at$rxm";
+
 		//ClearRXMode
 		public const string OOPNoRXCall = "at!rxm";
+
 		//SetTxMode
 		public const string OOPTxMOde = "at$txm";
+
 		//ClearTxMode
 		public const string OOPNoTXMOde = "at!txm";
+
+		//RebootHEad
+		public const string IOPReboot = "at@rbt";
 	}
 }

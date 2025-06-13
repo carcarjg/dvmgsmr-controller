@@ -4,6 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Description>Control Head comunication with the DVMGSMR Control head</Description>
+    <Copyright>Copyright (C) 2025 Nyx Gallini N5UWU</Copyright>
+    <RepositoryUrl>https://github.com/carcarjg/dvmgsmr-controller.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>SR0.1</AssemblyVersion>
+    <FileVersion>SR0.1</FileVersion>
   </PropertyGroup>
 
 </Project>

@@ -63,6 +63,13 @@ const String IOPControllerReady = "at&cok";
 
 //SetHeadcode
 const String IOPHeadcode = "at$hdc";
+const String OOPHcb0 = "at$hc0";
+const String OOPHcb1 = "at$hc1";
+const String OOPHcb2 = "at$hc2";
+const String OOPHcb3 = "at$hc3";
+const String OOPHcb4 = "at$hc4";
+const String OOPHcb5 = "at$hc5";
+
 //SetChannel
 const String IOPChan = "at$cha";
 //SetRXRID
@@ -75,6 +82,8 @@ const String IOPNoRXCall = "at!rxm";
 const String IOPTxMOde = "at$txm";
 //ClearTxMode
 const String IOPNoTXMOde = "at!txm";
+//Reboot
+const String IOPReboot = "at@rbt";
 
 ///Outbound
 //Outbound cmd to ack
@@ -117,6 +126,31 @@ const String OOPb15 = "at#b15";
 //Outbound cmd Button16
 const String OOPb16 = "at#b16";
 
+//Outbound cmd KeyPad 1
+const String OOPkp1 = "at#kp1";
+//Outbound cmd KeyPad 2
+const String OOPkp2 = "at#kp2";
+//Outbound cmd KeyPad 3
+const String OOPkp3 = "at#kp3";
+//Outbound cmd KeyPad 4
+const String OOPkp4 = "at#kp4";
+//Outbound cmd KeyPad 5
+const String OOPkp5 = "at#kp5";
+//Outbound cmd KeyPad 6
+const String OOPkp6 = "at#kp6";
+//Outbound cmd KeyPad 7
+const String OOPkp7 = "at#kp7";
+//Outbound cmd KeyPad 8
+const String OOPkp8 = "at#kp8";
+//Outbound cmd KeyPad 9
+const String OOPkp9 = "at#kp9";
+//Outbound cmd KeyPad 0
+const String OOPkp0 = "at#kp0";
+//Outbound cmd KeyPad Check
+const String OOPkpCheck = "at#chk";
+//Outbound cmd KeyPad Cross
+const String OOPkpCross = "at#crs";
+
 unsigned long previousMillisRX = 0;
 unsigned long previousMillisSTAT = 0;
 unsigned long previousMillisEmrg = 0;
@@ -158,6 +192,8 @@ void setup() {
   pinMode(Pb8, INPUT);
   pinMode(Pb9, INPUT);
   pinMode(11, OUTPUT);
+  digitalWrite(48, HIGH);
+  pinMode(48, OUTPUT);
   Serial.begin(115200);
   lcd.init();
   lcd.setCursor(0, 0);  //param1 = X   param2 = Y
@@ -205,6 +241,8 @@ void setup() {
     }
     lcd.setCursor(2, 0);
     lcd.print("DVM GSM-R SR0.1B");
+    lcd.setCursor(3, 1);
+    lcd.print("Service Pack 2A");
     lcd.setCursor(5, 2);
     lcd.print("**WARNING**");
     lcd.setCursor(4, 3);
@@ -218,6 +256,7 @@ void setup() {
     }
 
   } while (tmpcmd != IOPControllerReady);
+  Serial.println(OOPack);
   lcd.clear();
   digitalWrite(32, HIGH);
   digitalWrite(30, HIGH);
@@ -279,58 +318,49 @@ void loop() {
   /*if (digitalRead(EmrgButPb1) == HIGH) {
       Serial.println(OOPb1);
       lcd.setCursor(0, 1);
-      lcd.print("Button1");
     } else if (digitalRead(DispButPb2) == HIGH) {
       lcd.setCursor(0, 1);
-      lcd.print("Button1");
       Serial.println(OOPb2);
     } */
   if (digitalRead(Pb3) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
-    lcd.print("Button1");
     Serial.println(OOPb3);
     delay(200);
     tone(11, 1050, 100);
   } else if (digitalRead(Pb4) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
-    lcd.print("Button2");
     Serial.println(OOPb4);
     delay(200);
     tone(11, 1050, 100);
   } else if (digitalRead(Pb5) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
-    lcd.print("Button3");
     Serial.println(OOPb5);
     delay(200);
     tone(11, 1050, 100);
   } else if (digitalRead(Pb6) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
-    lcd.print("Button4");
     Serial.println(OOPb6);
     delay(200);
     tone(11, 1050, 100);
   } else if (digitalRead(Pb7) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
-    lcd.print("Button5");
     Serial.println(OOPb7);
     delay(200);
     tone(11, 1050, 100);
   } else if (digitalRead(Pb8) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
-    lcd.print("Button6");
     Serial.println(OOPb8);
     delay(200);
     tone(11, 1050, 100);
   } else if (digitalRead(Pb9) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
-    lcd.print("Button7");
     Serial.println(OOPb9);
     delay(200);
     tone(11, 1050, 100);
@@ -426,6 +456,32 @@ void loop() {
     } else if (cmdfromserial == IOPNoTXMOde) {
       lcd.setCursor(0, 1);
       lcd.print("             ");
+    } else if (cmdfromserial == IOPReboot) {
+      digitalWrite(48, LOW);
+    } else if (cmdfromserial == OOPHcb0) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == OOPHcb1) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(1, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == OOPHcb2) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(2, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == OOPHcb3) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(3, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == OOPHcb4) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(4, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == OOPHcb5) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(5, 2);
+      lcd.print(text);
     }
   }
   char keypress = keypad.getKey();
@@ -433,66 +489,97 @@ void loop() {
     case '1':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp1);
       delay(200);
       break;
     case '2':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp2);
       delay(200);
       break;
     case '3':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp3);
       delay(200);
       break;
     case '4':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp4);
       delay(200);
       break;
     case '5':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp5);
       delay(200);
       break;
     case '6':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp6);
       delay(200);
       break;
     case '7':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp7);
       delay(200);
       break;
     case '8':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp8);
       delay(200);
       break;
     case '9':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPkp9);
       delay(200);
       break;
     case 'A':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPb15);
       delay(200);
       break;
     case 'B':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPb14);
       delay(200);
       break;
     case 'C':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPb13);
       delay(200);
       break;
     case 'D':
       delay(200);
       tone(11, 1050, 100);
+      Serial.println(OOPb12);
+      delay(200);
+      break;
+    case '0':
+      delay(200);
+      tone(11, 1050, 100);
+      Serial.println(OOPkp0);
+      delay(200);
+      break;
+    case '*':
+      delay(200);
+      tone(11, 1050, 100);
+      Serial.println(OOPkpCheck);
+      delay(200);
+      break;
+    case '#':
+      delay(200);
+      tone(11, 1050, 100);
+      Serial.println(OOPkpCross);
       delay(200);
       break;
   }
