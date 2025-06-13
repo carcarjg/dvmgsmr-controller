@@ -1,6 +1,6 @@
 # Digital Voice Modem Global System for Mobile Communications – Railway Controller
 
-This is a hardware implementation of https://github.com/carcarjg/dvmgsm-r
+This is a hardware implementation of https://github.com/carcarjg/dvmgsm-r using https://github.com/W3AXL/rc2-dvm/tree/main to interface with a DVM FNE *MAY* Eventualy work with RC2-CORE to interface with other LMR radios.
 
 
 Current state of the hardware
