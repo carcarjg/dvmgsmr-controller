@@ -239,7 +239,10 @@ void setup() {
   lcd.clear();
   //Wait for controller
   String tmpcmd;
+  unsigned long currentMillis = millis();
+  previousMillisEmrgBeep = currentMillis;
   do {
+    currentMillis = millis();
     if (Serial.available() > 0) {
       String readfromserial;
       readfromserial = Serial.readStringUntil('\n');
@@ -253,10 +256,19 @@ void setup() {
     lcd.print("**WARNING**");
     lcd.setCursor(4, 3);
     lcd.print("!!LOST MRU!!");
+    digitalWrite(32, LOW);
+    digitalWrite(30, LOW);
+
+    if (currentMillis - previousMillisEmrgBeep >= 700) {
+      previousMillisEmrgBeep = currentMillis;
+      digitalWrite(32, HIGH);
+      digitalWrite(30, HIGH);
+    }
     if (i > 30) {
       i = 0;
     } else if (i = 10) {
       Serial.println(OOPHeadReady);
+      i++;
     } else {
       i++;
     }
@@ -310,7 +322,7 @@ void loop() {
     if (errormsgshow == true) {
       lcd.setCursor(0, 2);
       lcd.print("                   ");
-      errormsgshow=false;
+      errormsgshow = false;
     }
   }
 
@@ -333,11 +345,13 @@ void loop() {
   /*if (digitalRead(EmrgButPb1) == HIGH) {
       Serial.println(OOPb1);
       lcd.setCursor(0, 1);
-    } else if (digitalRead(DispButPb2) == HIGH) {
-      lcd.setCursor(0, 1);
-      Serial.println(OOPb2);
-    } */
-  if (digitalRead(Pb3) == HIGH) {
+    } else */
+  if (digitalRead(DispButPb2) == LOW) {
+    delay(400);
+    Serial.println(OOPb2);
+    delay(400);
+    tone(11, 1976, 100);
+  } else if (digitalRead(Pb3) == HIGH) {
     delay(200);
     lcd.setCursor(0, 1);
     Serial.println(OOPb3);
