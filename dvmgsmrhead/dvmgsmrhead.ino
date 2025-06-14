@@ -183,9 +183,7 @@ byte pin_column[COLUMN_NUM] = { 33, 34, 35, 36 };  //connect to the column pinou
 
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
 
-// the setup function runs once when you press reset or power the board
 void setup() {
-  // initialize digital pin 13 as an output.
   pinMode(32, OUTPUT);
   pinMode(30, OUTPUT);
   pinMode(EmrgButPb1, INPUT);
@@ -342,11 +340,12 @@ void loop() {
     }
   }
 
-  /*if (digitalRead(EmrgButPb1) == HIGH) {
-      Serial.println(OOPb1);
-      lcd.setCursor(0, 1);
-    } else */
-  if (digitalRead(DispButPb2) == LOW) {
+  if (digitalRead(EmrgButPb1) == LOW) {
+    delay(400);
+    Serial.println(OOPb1);
+    delay(400);
+    tone(11, 1976, 100);
+  } else if (digitalRead(DispButPb2) == LOW) {
     delay(400);
     Serial.println(OOPb2);
     delay(400);
