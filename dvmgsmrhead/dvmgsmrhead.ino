@@ -60,15 +60,19 @@ const String IOPReqSlfChk = "at?slf";
 
 //ControllerReady
 const String IOPControllerReady = "at&cok";
+//Display Error MSG + Clear Screen
+const String IOPErrorAndClear = "at!eac";
 
 //SetHeadcode
 const String IOPHeadcode = "at$hdc";
-const String OOPHcb0 = "at$hc0";
-const String OOPHcb1 = "at$hc1";
-const String OOPHcb2 = "at$hc2";
-const String OOPHcb3 = "at$hc3";
-const String OOPHcb4 = "at$hc4";
-const String OOPHcb5 = "at$hc5";
+const String IOPHcb0 = "at$hc0";
+const String IOPHcb1 = "at$hc1";
+const String IOPHcb2 = "at$hc2";
+const String IOPHcb3 = "at$hc3";
+const String IOPHcb4 = "at$hc4";
+const String IOPHcb5 = "at$hc5";
+const String IOPHcb6 = "at$hc6";
+const String IOPHcb7 = "at$hc7";
 
 //SetChannel
 const String IOPChan = "at$cha";
@@ -155,6 +159,7 @@ unsigned long previousMillisRX = 0;
 unsigned long previousMillisSTAT = 0;
 unsigned long previousMillisEmrg = 0;
 unsigned long previousMillisEmrgBeep = 0;
+unsigned long previousMillisErrMSG = 0;
 
 unsigned long lastctrlOKMillis = 0;
 int missedStatusChecks;
@@ -164,6 +169,7 @@ bool rxcallenable;
 bool rxemrgcallenable;
 bool rxcallphase;
 bool rxemrgcallphase;
+bool errormsgshow;
 
 char keys[ROW_NUM][COLUMN_NUM] = {
   { '1', '2', '3', 'A' },
@@ -299,7 +305,14 @@ void loop() {
     }
   }
 
-
+  if (currentMillis - previousMillisErrMSG >= 2000) {
+    previousMillisErrMSG = currentMillis;
+    if (errormsgshow == true) {
+      lcd.setCursor(0, 2);
+      lcd.print("                   ");
+      errormsgshow=false;
+    }
+  }
 
   //RXCallBlinky
   if (currentMillis - previousMillisRX >= 500) {
@@ -367,125 +380,7 @@ void loop() {
     delay(200);
     tone(11, 1976, 100);
   }
-  //Look for CMD from Controller
-  if (Serial.available() > 0) {
-    String readfromserial;
-    readfromserial = Serial.readStringUntil('\n');
-    String cmdfromserial = readfromserial.substring(0, 6);
-    //lcd.setCursor(0, 1);
-    //lcd.print(cmdfromserial);
-    //look for at$CMD
-    //I wanted to use a switch... but stupid C++ said no
-    if (cmdfromserial == IOPLine0) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(0, 0);
-      lcd.print(text);
-    } else if (cmdfromserial == IOPLine1) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(0, 1);
-      lcd.print(text);
-    } else if (cmdfromserial == IOPLine2) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(0, 2);
-      lcd.print(text);
-    } else if (cmdfromserial == IOPLine3) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(0, 3);
-      lcd.print(text);
-    } else if (cmdfromserial == IOPFlEmrg) {
-    } else if (cmdfromserial == IOPFlDisp) {
-    } else if (cmdfromserial == IOPSdyEmrg) {
-    } else if (cmdfromserial == IOPSdyDisp) {
-    } else if (cmdfromserial == IOPOffEmrg) {
-    } else if (cmdfromserial == IOPOffDisp) {
-    } else if (cmdfromserial == IOPpwrOff) {
-      lcd.noBacklight();
-    } else if (cmdfromserial == IOPpwrOn) {
-      lcd.backlight();
-    } else if (cmdfromserial == IOPdsdOn) {
-      rxemrgcallenable = true;
-    } else if (cmdfromserial == IOPdsdOff) {
-      lcd.setCursor(0, 1);
-      lcd.print("                    ");
-      lcd.setCursor(0, 2);
-      lcd.print("                    ");
-      rxemrgcallenable = false;
-      rxemrgcallphase = true;
-    } else if (cmdfromserial == IOPReqStatus) {
-      lastctrlOKMillis = millis();
-      Serial.println(OOPack);
-    } else if (cmdfromserial == IOPReqSlfChk) {
-    } else if (cmdfromserial == IOPHeadcode) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(14, 0);
-      lcd.print(text);
-      lcd.setCursor(0, 2);
-      lcd.print("Registering");
-      delay(2000);
-      lcd.setCursor(0, 2);
-      lcd.print("             ");
-      tone(11, 932.3275230361799, 100);
-      delay(200);
-      tone(11, 932.3275230361799, 100);
-    } else if (cmdfromserial == IOPChan) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(0, 3);
-      lcd.print(text);
-      lcd.setCursor(0, 2);
-      lcd.print("Registering");
-      delay(2000);
-      lcd.setCursor(0, 2);
-      lcd.print("             ");
-      tone(11, 932.3275230361799, 100);
-      delay(200);
-      tone(11, 932.3275230361799, 100);
-    } else if (cmdfromserial == IOPRxRID) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(0, 2);
-      lcd.print(text);
-    } else if (cmdfromserial == IOPRxCall) {
-      rxcallenable = true;
-      rxcallphase = false;
-    } else if (cmdfromserial == IOPNoRXCall) {
-      rxcallenable = false;
-      lcd.setCursor(0, 2);
-      lcd.print("             ");
-      lcd.setCursor(0, 1);
-      lcd.print("             ");
-    } else if (cmdfromserial == IOPTxMOde) {
-      lcd.setCursor(0, 1);
-      lcd.print("Outgoing Call");
-    } else if (cmdfromserial == IOPNoTXMOde) {
-      lcd.setCursor(0, 1);
-      lcd.print("             ");
-    } else if (cmdfromserial == IOPReboot) {
-      digitalWrite(48, LOW);
-    } else if (cmdfromserial == OOPHcb0) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(0, 2);
-      lcd.print(text);
-    } else if (cmdfromserial == OOPHcb1) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(1, 2);
-      lcd.print(text);
-    } else if (cmdfromserial == OOPHcb2) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(2, 2);
-      lcd.print(text);
-    } else if (cmdfromserial == OOPHcb3) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(3, 2);
-      lcd.print(text);
-    } else if (cmdfromserial == OOPHcb4) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(4, 2);
-      lcd.print(text);
-    } else if (cmdfromserial == OOPHcb5) {
-      String text = readfromserial.substring(6, readfromserial.length());
-      lcd.setCursor(5, 2);
-      lcd.print(text);
-    }
-  }
+
   char keypress = keypad.getKey();
   switch (keypress) {
     case '1':
@@ -584,5 +479,146 @@ void loop() {
       Serial.println(OOPkpCross);
       delay(200);
       break;
+  }
+  //Look for CMD from Controller
+  if (Serial.available() > 0) {
+    String readfromserial;
+    readfromserial = Serial.readStringUntil('\n');
+    String cmdfromserial = readfromserial.substring(0, 6);
+    //lcd.setCursor(0, 1);
+    //lcd.print(cmdfromserial);
+    //look for at$CMD
+    //I wanted to use a switch... but stupid C++ said no
+    if (cmdfromserial == IOPLine0) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 0);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPLine1) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 1);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPLine2) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPLine3) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 3);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPFlEmrg) {
+    } else if (cmdfromserial == IOPFlDisp) {
+    } else if (cmdfromserial == IOPSdyEmrg) {
+    } else if (cmdfromserial == IOPSdyDisp) {
+    } else if (cmdfromserial == IOPOffEmrg) {
+    } else if (cmdfromserial == IOPOffDisp) {
+    } else if (cmdfromserial == IOPpwrOff) {
+      lcd.noBacklight();
+    } else if (cmdfromserial == IOPpwrOn) {
+      lcd.backlight();
+    } else if (cmdfromserial == IOPdsdOn) {
+      rxemrgcallenable = true;
+    } else if (cmdfromserial == IOPdsdOff) {
+      lcd.setCursor(0, 1);
+      lcd.print("                    ");
+      lcd.setCursor(0, 2);
+      lcd.print("                    ");
+      rxemrgcallenable = false;
+      rxemrgcallphase = true;
+    } else if (cmdfromserial == IOPReqStatus) {
+      lastctrlOKMillis = millis();
+      Serial.println(OOPack);
+    } else if (cmdfromserial == IOPReqSlfChk) {
+    } else if (cmdfromserial == IOPHeadcode) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 1);
+      lcd.print("Registering       ");
+      delay(2000);
+      lcd.setCursor(0, 2);
+      lcd.print("                  ");
+      lcd.setCursor(0, 1);
+      lcd.print("                   ");
+      tone(11, 932.3275230361799, 100);
+      delay(200);
+      tone(11, 932.3275230361799, 100);
+      lcd.setCursor(14, 0);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPChan) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 3);
+      lcd.print(text);
+      lcd.setCursor(0, 2);
+      lcd.print("Registering");
+      delay(2000);
+      lcd.setCursor(0, 2);
+      lcd.print("             ");
+      tone(11, 932.3275230361799, 100);
+      delay(200);
+      tone(11, 932.3275230361799, 100);
+    } else if (cmdfromserial == IOPRxRID) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPRxCall) {
+      rxcallenable = true;
+      rxcallphase = false;
+    } else if (cmdfromserial == IOPNoRXCall) {
+      rxcallenable = false;
+      lcd.setCursor(0, 2);
+      lcd.print("             ");
+      lcd.setCursor(0, 1);
+      lcd.print("             ");
+    } else if (cmdfromserial == IOPTxMOde) {
+      lcd.setCursor(0, 1);
+      lcd.print("Outgoing Call");
+    } else if (cmdfromserial == IOPNoTXMOde) {
+      lcd.setCursor(0, 1);
+      lcd.print("             ");
+    } else if (cmdfromserial == IOPReboot) {
+      digitalWrite(48, LOW);
+    } else if (cmdfromserial == IOPHcb0) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPHcb1) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(1, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPHcb2) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(2, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPHcb3) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(3, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPHcb4) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(4, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPHcb5) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(5, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPHcb6) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(6, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPHcb7) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(7, 2);
+      lcd.print(text);
+    } else if (cmdfromserial == IOPErrorAndClear) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 2);
+      lcd.print("                    ");
+      lcd.setCursor(0, 1);
+      lcd.print("                    ");
+      errormsgshow = true;
+      previousMillisErrMSG = currentMillis;
+      tone(11, 523, 200);
+      tone(11, 523, 400);
+      lcd.setCursor(0, 2);
+      lcd.print(text);
+    }
   }
 }

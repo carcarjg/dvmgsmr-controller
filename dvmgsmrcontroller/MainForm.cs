@@ -21,7 +21,7 @@ namespace dvmgsmrcontroller
 
 		private string headcode;
 
-		private string[] headcoderegproc = { "", "", "", "", "", "", "" };
+		private string[] headcoderegproc = { "", "", "", "", "", "", "", "" };
 
 		private string afftg;
 
@@ -180,7 +180,49 @@ namespace dvmgsmrcontroller
 				case CmdsInbound.IOPkpCheck:
 					if (reginprocess == 1)
 					{
-						reginprocess = 2;
+						int inthc = int.Parse(headcode);
+						if (inthc > 00000000 && inthc < 16077700)
+						{
+							reginprocess = 2;
+
+							//todo remove this
+							reginprocess = 0;
+							regstatus = true;
+							string tmphex = inthc.ToString("X");
+							switch (tmphex.Length)
+							{
+								case 1:
+									tmphex = "     " + tmphex;
+									break;
+
+								case 2:
+									tmphex = "    " + tmphex;
+									break;
+
+								case 3:
+									tmphex = "   " + tmphex;
+									break;
+
+								case 4:
+									tmphex = "  " + tmphex;
+									break;
+
+								case 5:
+									tmphex = " " + tmphex;
+									break;
+							}
+							_serialPort.WriteLine(CmdsOutbound.OOPHeadcode + tmphex);
+						}
+						else
+						{
+							reginprocess = 0;
+							headcode = "";
+							string[] HCPROCRESET = { "", "", "", "", "", "", "", "" };
+							headcoderegproc = HCPROCRESET;
+							_serialPort.WriteLine(CmdsOutbound.OOPErrorAndClear + "Invalid ID");
+						}
+
+						//string hexValue = headcode.ToString("X");
 
 						//TODO: Registrationcode
 					}
@@ -203,41 +245,56 @@ namespace dvmgsmrcontroller
 							{
 								headcoderegproc[0] = "1";
 								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
 								lastkppressreg = 1;
 							}
 							else if (headcoderegproc[1].Length == 0)
 							{
 								headcoderegproc[1] = "1";
 								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
-								headcode = headcode + headcoderegproc[0];
+								headcode = headcode + headcoderegproc[1];
 								lastkppressreg = 1;
 							}
 							else if (headcoderegproc[2].Length == 0)
 							{
 								headcoderegproc[2] = "1";
 								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
-								headcode = headcode + headcoderegproc[1];
+								headcode = headcode + headcoderegproc[2];
 								lastkppressreg = 1;
 							}
 							else if (headcoderegproc[3].Length == 0)
 							{
 								headcoderegproc[3] = "1";
 								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
-								headcode = headcode + headcoderegproc[2];
+								headcode = headcode + headcoderegproc[3];
 								lastkppressreg = 1;
 							}
 							else if (headcoderegproc[4].Length == 0)
 							{
 								headcoderegproc[4] = "1";
 								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
-								headcode = headcode + headcoderegproc[3];
+								headcode = headcode + headcoderegproc[4];
 								lastkppressreg = 1;
 							}
 							else if (headcoderegproc[5].Length == 0)
 							{
 								headcoderegproc[5] = "1";
 								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
-								headcode = headcode + headcoderegproc[4] + headcoderegproc[5];
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 1;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "1";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 1;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "1";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
 								lastkppressreg = 1;
 							}
 						}
@@ -247,235 +304,586 @@ namespace dvmgsmrcontroller
 				case CmdsInbound.IOPkp2:
 					if (reginprocess == 1)
 					{
-						if (headcode.Length <= 6)
+						if (headcode.Length <= 7)
 						{
-							switch (kp2press)
+							if (headcoderegproc[0].Length == 0)
 							{
-								//TODO: This shouldnt write the headcode to the headcode table untill another keypress has happened just in case of a A,B, or C entry
-								case 0:
-									if (headcoderegproc[0].Length == 0)
-									{
-										headcoderegproc[0] = "2";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[1].Length == 0)
-									{
-										headcoderegproc[1] = "2";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
-										headcode = headcode + headcoderegproc[0];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[2].Length == 0)
-									{
-										headcoderegproc[2] = "2";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
-										headcode = headcode + headcoderegproc[1];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[3].Length == 0)
-									{
-										headcoderegproc[3] = "2";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
-										headcode = headcode + headcoderegproc[2];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[4].Length == 0)
-									{
-										headcoderegproc[4] = "2";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
-										headcode = headcode + headcoderegproc[3];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[5].Length == 0)
-									{
-										headcoderegproc[5] = "2";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
-										headcode = headcode + headcoderegproc[4] + headcoderegproc[5];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									break;
-
-								case 1:
-									if (headcoderegproc[0].Length == 0)
-									{
-										headcoderegproc[0] = "A";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[1].Length == 0)
-									{
-										headcoderegproc[1] = "A";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
-										headcode = headcode + headcoderegproc[0];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[2].Length == 0)
-									{
-										headcoderegproc[2] = "A";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
-										headcode = headcode + headcoderegproc[1];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[3].Length == 0)
-									{
-										headcoderegproc[3] = "A";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
-										headcode = headcode + headcoderegproc[2];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[4].Length == 0)
-									{
-										headcoderegproc[4] = "A";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
-										headcode = headcode + headcoderegproc[3];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[5].Length == 0)
-									{
-										headcoderegproc[5] = "A";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
-										headcode = headcode + headcoderegproc[4] + headcoderegproc[5];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									break;
-
-								case 2:
-									if (headcoderegproc[0].Length == 0)
-									{
-										headcoderegproc[0] = "B";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[1].Length == 0)
-									{
-										headcoderegproc[1] = "B";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
-										headcode = headcode + headcoderegproc[0];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[2].Length == 0)
-									{
-										headcoderegproc[2] = "B";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
-										headcode = headcode + headcoderegproc[1];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[3].Length == 0)
-									{
-										headcoderegproc[3] = "B";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
-										headcode = headcode + headcoderegproc[2];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[4].Length == 0)
-									{
-										headcoderegproc[4] = "B";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
-										headcode = headcode + headcoderegproc[3];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[5].Length == 0)
-									{
-										headcoderegproc[5] = "B";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
-										headcode = headcode + headcoderegproc[4] + headcoderegproc[5];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									break;
-
-								case 3:
-									if (headcoderegproc[0].Length == 0)
-									{
-										headcoderegproc[0] = "C";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[1].Length == 0)
-									{
-										headcoderegproc[1] = "C";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
-										headcode = headcode + headcoderegproc[0];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[2].Length == 0)
-									{
-										headcoderegproc[2] = "C";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
-										headcode = headcode + headcoderegproc[1];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[3].Length == 0)
-									{
-										headcoderegproc[3] = "C";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
-										headcode = headcode + headcoderegproc[2];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[4].Length == 0)
-									{
-										headcoderegproc[4] = "C";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
-										headcode = headcode + headcoderegproc[3];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									else if (headcoderegproc[5].Length == 0)
-									{
-										headcoderegproc[5] = "C";
-										_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
-										headcode = headcode + headcoderegproc[4] + headcoderegproc[5];
-										lastkppressreg = 2;
-										kp2press++;
-									}
-									break;
-									break;
+								headcoderegproc[0] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "2";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
 							}
 						}
 					}
 					break;
 
 				case CmdsInbound.IOPkp3:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "3";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
 					break;
 
 				case CmdsInbound.IOPkp4:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "4";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
 					break;
 
 				case CmdsInbound.IOPkp5:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "5";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
 					break;
 
 				case CmdsInbound.IOPkp6:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "6";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
 					break;
 
 				case CmdsInbound.IOPkp7:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "7";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
 					break;
 
 				case CmdsInbound.IOPkp8:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "8";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
 					break;
 
 				case CmdsInbound.IOPkp9:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "9";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
+					break;
+
+				case CmdsInbound.IOPkp0:
+					if (reginprocess == 1)
+					{
+						if (headcode.Length <= 7)
+						{
+							if (headcoderegproc[0].Length == 0)
+							{
+								headcoderegproc[0] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb0 + headcoderegproc[0]);
+								headcode = headcode + headcoderegproc[0];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[1].Length == 0)
+							{
+								headcoderegproc[1] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb1 + headcoderegproc[1]);
+								headcode = headcode + headcoderegproc[1];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[2].Length == 0)
+							{
+								headcoderegproc[2] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb2 + headcoderegproc[2]);
+								headcode = headcode + headcoderegproc[2];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[3].Length == 0)
+							{
+								headcoderegproc[3] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb3 + headcoderegproc[3]);
+								headcode = headcode + headcoderegproc[3];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[4].Length == 0)
+							{
+								headcoderegproc[4] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb4 + headcoderegproc[4]);
+								headcode = headcode + headcoderegproc[4];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[5].Length == 0)
+							{
+								headcoderegproc[5] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb5 + headcoderegproc[5]);
+								headcode = headcode + headcoderegproc[5];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[6].Length == 0)
+							{
+								headcoderegproc[6] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb6 + headcoderegproc[6]);
+								headcode = headcode + headcoderegproc[6];
+								lastkppressreg = 2;
+							}
+							else if (headcoderegproc[7].Length == 0)
+							{
+								headcoderegproc[7] = "0";
+								_serialPort.WriteLine(CmdsOutbound.OOPHcb7 + headcoderegproc[7]);
+								headcode = headcode + headcoderegproc[7];
+								lastkppressreg = 2;
+							}
+						}
+					}
 					break;
 			}
 		}

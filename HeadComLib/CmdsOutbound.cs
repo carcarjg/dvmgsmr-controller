@@ -56,6 +56,8 @@
 		//SetHeadcode
 		public const string OOPHeadcode = "at$hdc";
 
+		//RegProcess Headcode Bits Line 3
+
 		public const string OOPHcb0 = "at$hc0";
 
 		public const string OOPHcb1 = "at$hc1";
@@ -67,6 +69,10 @@
 		public const string OOPHcb4 = "at$hc4";
 
 		public const string OOPHcb5 = "at$hc5";
+
+		public const string OOPHcb6 = "at$hc6";
+
+		public const string OOPHcb7 = "at$hc7";
 
 		//SetChannel
 		public const string OOPChan = "at$cha";
@@ -85,6 +91,9 @@
 
 		//ClearTxMode
 		public const string OOPNoTXMOde = "at!txm";
+
+		//Display Error MSG + Clear Screen
+		public const string OOPErrorAndClear = "at!eac";
 
 		//RebootHEad
 		public const string IOPReboot = "at@rbt";
