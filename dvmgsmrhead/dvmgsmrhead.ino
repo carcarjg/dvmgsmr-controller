@@ -63,6 +63,9 @@ const String IOPControllerReady = "at&cok";
 //Display Error MSG + Clear Screen
 const String IOPErrorAndClear = "at!eac";
 
+//Set GSM-R Country
+const String IOPCountrySet = "at%ctr";
+
 //SetHeadcode
 const String IOPHeadcode = "at$hdc";
 const String IOPHcb0 = "at$hc0";
@@ -170,6 +173,7 @@ bool rxemrgcallenable;
 bool rxcallphase;
 bool rxemrgcallphase;
 bool errormsgshow;
+int country = 0;
 
 char keys[ROW_NUM][COLUMN_NUM] = {
   { '1', '2', '3', 'A' },
@@ -632,6 +636,166 @@ void loop() {
       tone(11, 523, 400);
       lcd.setCursor(0, 2);
       lcd.print(text);
+    } else if (cmdfromserial == IOPCountrySet) {
+      String text = readfromserial.substring(6, readfromserial.length());
+      lcd.setCursor(0, 0);
+      //These are pulled from
+      //https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Glossary:Country_codes
+      //They are in order as I was reading from top to bottom.. save for the first three as I was trying to remember some
+      //off the top of my head
+      //I do realize there are a few on this list that will prob piss some people off
+      //Get mad at the EU.. not me. I just read the list and put them on here
+      //once again... the order is not a ranking... its just the list from top to bottom on the website.
+      //K Thx...
+      if (text == "1") {
+        lcd.print("GSM-R US ");
+      } else if (text == "2") {
+        lcd.print("GSM-R GB ");
+      } else if (text == "3") {
+        lcd.print("GSM-R DB ");
+      } else if (text == "4") {
+        lcd.print("GSM-R BE ");
+      } else if (text == "5") {
+        lcd.print("GSM-R BG ");
+      } else if (text == "6") {
+        lcd.print("GSM-R CZ ");
+      } else if (text == "7") {
+        lcd.print("GSM-R DK ");
+      } else if (text == "8") {
+        lcd.print("GSM-R EE ");
+      } else if (text == "9") {
+        lcd.print("GSM-R IE ");
+      } else if (text == "0") {
+        lcd.print("GSM-R EL ");
+      } else if (text == "10") {
+        lcd.print("GSM-R ES ");
+      } else if (text == "11") {
+        lcd.print("GSM-R FR ");
+      } else if (text == "12") {
+        lcd.print("GSM-R HR ");
+      } else if (text == "13") {
+        lcd.print("GSM-R IT ");
+      } else if (text == "14") {
+        lcd.print("GSM-R CY ");
+      } else if (text == "15") {
+        lcd.print("GSM-R LV ");
+      } else if (text == "16") {
+        lcd.print("GSM-R LT ");
+      } else if (text == "17") {
+        lcd.print("GSM-R LU ");
+      } else if (text == "18") {
+        lcd.print("GSM-R HU ");
+      } else if (text == "19") {
+        lcd.print("GSM-R MT ");
+      } else if (text == "20") {
+        lcd.print("GSM-R NL ");
+      } else if (text == "21") {
+        lcd.print("GSM-R AT ");
+      } else if (text == "22") {
+        lcd.print("GSM-R PL ");
+      } else if (text == "23") {
+        lcd.print("GSM-R PT ");
+      } else if (text == "24") {
+        lcd.print("GSM-R RO ");
+      } else if (text == "25") {
+        lcd.print("GSM-R SI ");
+      } else if (text == "26") {
+        lcd.print("GSM-R SK ");
+      } else if (text == "27") {
+        lcd.print("GSM-R FI ");
+      } else if (text == "28") {
+        lcd.print("GSM-R SE ");
+      } else if (text == "29") {
+        lcd.print("GSM-R IS ");
+      } else if (text == "30") {
+        lcd.print("GSM-R LI ");
+      } else if (text == "31") {
+        lcd.print("GSM-R NO ");
+      } else if (text == "32") {
+        lcd.print("GSM-R CH ");
+      } else if (text == "33") {
+        lcd.print("GSM-R BA ");
+      } else if (text == "34") {
+        lcd.print("GSM-R ME ");
+      } else if (text == "35") {
+        lcd.print("GSM-R MD ");
+      } else if (text == "36") {
+        lcd.print("GSM-R MK ");
+      } else if (text == "37") {
+        lcd.print("GSM-R GE ");
+      } else if (text == "38") {
+        lcd.print("GSM-R AL ");
+      } else if (text == "39") {
+        lcd.print("GSM-R RS ");
+      } else if (text == "40") {
+        lcd.print("GSM-R TR ");
+      } else if (text == "41") {
+        lcd.print("GSM-R TR ");
+      } else if (text == "42") {
+        lcd.print("GSM-R UA ");
+      } else if (text == "43") {
+        lcd.print("GSM-R XK ");
+      } else if (text == "44") {
+        lcd.print("GSM-R AM ");
+      } else if (text == "45") {
+        lcd.print("GSM-R BY ");
+      } else if (text == "46") {
+        lcd.print("GSM-R AZ ");
+      } else if (text == "47") {
+        lcd.print("GSM-R DZ ");
+      } else if (text == "48") {
+        lcd.print("GSM-R EG ");
+      } else if (text == "49") {
+        lcd.print("GSM-R IL ");
+      } else if (text == "50") {
+        lcd.print("GSM-R JO ");
+      } else if (text == "51") {
+        lcd.print("GSM-R LB ");
+      } else if (text == "52") {
+        lcd.print("GSM-R LY ");
+      } else if (text == "53") {
+        lcd.print("GSM-R MA ");
+      } else if (text == "54") {
+        lcd.print("GSM-R PS ");
+      } else if (text == "55") {
+        lcd.print("GSM-R SY ");
+      } else if (text == "56") {
+        lcd.print("GSM-R TN ");
+      } else if (text == "57") {
+        lcd.print("GSM-R AR ");
+      } else if (text == "58") {
+        lcd.print("GSM-R AU ");
+      } else if (text == "59") {
+        lcd.print("GSM-R BR ");
+      } else if (text == "60") {
+        lcd.print("GSM-R CA ");
+      } else if (text == "61") {
+        lcd.print("GSM-R CN ");
+      } else if (text == "62") {
+        lcd.print("GSM-R HK ");
+      } else if (text == "63") {
+        lcd.print("GSM-R IN ");
+      } else if (text == "64") {
+        lcd.print("GSM-R JP ");
+      } else if (text == "65") {
+        lcd.print("GSM-R MX ");
+      } else if (text == "66") {
+        lcd.print("GSM-R NG ");
+      } else if (text == "67") {
+        lcd.print("GSM-R NZ ");
+      } else if (text == "68") {
+        lcd.print("GSM-R RU ");
+      } else if (text == "69") {
+        lcd.print("GSM-R SG ");
+      } else if (text == "70") {
+        lcd.print("GSM-R ZA ");
+      } else if (text == "71") {
+        lcd.print("GSM-R KR ");
+      } else if (text == "72") {
+        lcd.print("GSM-R TW ");
+      } else {
+        lcd.print("GSM-R DVM");
+      }
     }
   }
 }

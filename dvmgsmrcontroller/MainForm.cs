@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AudioSwitcher.AudioApi.CoreAudio;
 using HeadComLib;
 using Microsoft.VisualBasic.Logging;
 
@@ -43,6 +45,8 @@ namespace dvmgsmrcontroller
 
 		private int lastkppressreg;
 
+		private CoreAudioDevice defaultPlaybackDevice = new CoreAudioController().DefaultPlaybackDevice;
+
 		/// <summary>
 		/// Regprocess
 		/// Stage 0 - Not in progress
@@ -76,6 +80,11 @@ namespace dvmgsmrcontroller
 				serialportlistbox.Items.Add(port);
 			}
 			currentcmd = "hcnk";
+			try
+			{
+				daemonaddrTXT.Text = Properties.Settings.Default.daemonaddr;
+			}
+			catch (Exception ex) { }
 		}
 
 		private void connectbutton_Click(object sender, EventArgs e)
@@ -130,9 +139,13 @@ namespace dvmgsmrcontroller
 					break;
 
 				case CmdsInbound.IOPb8:
+
+					//Vol Dn
 					break;
 
 				case CmdsInbound.IOPb9:
+
+					//Vol Up
 					break;
 
 				case CmdsInbound.IOPb10:
@@ -886,6 +899,18 @@ namespace dvmgsmrcontroller
 					}
 					break;
 			}
+		}
+
+		private void volumedn()
+		{
+			if (defaultPlaybackDevice.Volume <= 25 && defaultPlaybackDevice.Volume >= 0) { }
+			defaultPlaybackDevice.Volume = 80;
+		}
+
+		private void volumeup()
+		{
+			Debug.WriteLine("Current Volume:" + defaultPlaybackDevice.Volume);
+			defaultPlaybackDevice.Volume = 80;
 		}
 
 		private void daemonconnectbut_Click(object sender, EventArgs e)

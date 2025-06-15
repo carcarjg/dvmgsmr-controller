@@ -97,5 +97,8 @@
 
 		//RebootHEad
 		public const string IOPReboot = "at@rbt";
+
+		//Set GSM-R Country
+		public const string OOPCountrySet = "at%ctr";
 	}
 }
