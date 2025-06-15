@@ -38,7 +38,7 @@
 			daemonaddrlabel = new Label();
 			daemonaddrTXT = new TextBox();
 			daemonptTXT = new TextBox();
-			button1 = new Button();
+			daemonconnectbut = new Button();
 			SuspendLayout();
 			// 
 			// connectbutton
@@ -125,14 +125,15 @@
 			daemonptTXT.Size = new Size(121, 23);
 			daemonptTXT.TabIndex = 9;
 			// 
-			// button1
+			// daemonconnectbut
 			// 
-			button1.Location = new Point(12, 217);
-			button1.Name = "button1";
-			button1.Size = new Size(121, 23);
-			button1.TabIndex = 10;
-			button1.Text = "Daemon Connect";
-			button1.UseVisualStyleBackColor = true;
+			daemonconnectbut.Location = new Point(12, 217);
+			daemonconnectbut.Name = "daemonconnectbut";
+			daemonconnectbut.Size = new Size(121, 23);
+			daemonconnectbut.TabIndex = 10;
+			daemonconnectbut.Text = "Daemon Connect";
+			daemonconnectbut.UseVisualStyleBackColor = true;
+			daemonconnectbut.Click += daemonconnectbut_Click;
 			// 
 			// MainForm
 			// 
@@ -141,7 +142,7 @@
 			BackgroundImage = Properties.Resources._48450756326_5aab7b8186_b;
 			BackgroundImageLayout = ImageLayout.Center;
 			ClientSize = new Size(800, 450);
-			Controls.Add(button1);
+			Controls.Add(daemonconnectbut);
 			Controls.Add(daemonptTXT);
 			Controls.Add(daemonaddrTXT);
 			Controls.Add(daemonaddrlabel);
@@ -170,6 +171,6 @@
 		private Label daemonaddrlabel;
 		private TextBox daemonaddrTXT;
 		private TextBox daemonptTXT;
-		private Button button1;
+		private Button daemonconnectbut;
 	}
 }

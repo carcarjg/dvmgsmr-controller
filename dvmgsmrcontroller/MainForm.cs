@@ -887,5 +887,10 @@ namespace dvmgsmrcontroller
 					break;
 			}
 		}
+
+		private void daemonconnectbut_Click(object sender, EventArgs e)
+		{
+			//Add WEB RTC Bs here
+		}
 	}
 }
