@@ -100,5 +100,23 @@
 
 		//Set GSM-R Country
 		public const string OOPCountrySet = "at%ctr";
+
+		//Volume Bar 0
+		public const string OOPVolBar0 = "at$vo0";
+
+		//Volume Bar 1
+		public const string OOPVolBar1 = "at$vo1";
+
+		//Volume Bar 2
+		public const string OOPVolBar2 = "at$vo2";
+
+		//Volume Bar 3
+		public const string OOPVolBar3 = "at$vo3";
+
+		//Volume Bar 4
+		public const string OOPVolBar4 = "at$vo4";
+
+		//Volume Bar 5
+		public const string OOPVolBar5 = "at$vo5";
 	}
 }

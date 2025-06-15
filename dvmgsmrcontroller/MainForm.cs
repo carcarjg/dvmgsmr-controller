@@ -940,9 +940,35 @@ namespace dvmgsmrcontroller
 
 		private void volumedn()
 		{
-			if (defaultPlaybackDevice.Volume <= 25 && defaultPlaybackDevice.Volume >= 0)
+			double vol = defaultPlaybackDevice.Volume;
+			if (vol == 0.0)
 			{
-				//s
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar0);
+			}
+			else if (vol <= 20.0 && vol >= 1.0)
+			{
+				defaultPlaybackDevice.Volume = 0.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar0);
+			}
+			else if (vol <= 40.0 && vol >= 21.0)
+			{
+				defaultPlaybackDevice.Volume = 20.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar1);
+			}
+			else if (vol <= 60.0 && vol >= 41.0)
+			{
+				defaultPlaybackDevice.Volume = 40.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar2);
+			}
+			else if (vol <= 80.0 && vol >= 71.0)
+			{
+				defaultPlaybackDevice.Volume = 60.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar3);
+			}
+			else if (vol <= 100.0 && vol >= 81.0)
+			{
+				defaultPlaybackDevice.Volume = 80.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar4);
 			}
 
 			//defaultPlaybackDevice.Volume = 80;
@@ -950,9 +976,36 @@ namespace dvmgsmrcontroller
 
 		private void volumeup()
 		{
-			Debug.WriteLine("Current Volume:" + defaultPlaybackDevice.Volume);
-
-			//defaultPlaybackDevice.Volume = 80;
+			double vol = defaultPlaybackDevice.Volume;
+			if (vol == 0.0)
+			{
+				defaultPlaybackDevice.Volume = 20.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar1);
+			}
+			else if (vol <= 20.0 && vol >= 1.0)
+			{
+				defaultPlaybackDevice.Volume = 40.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar2);
+			}
+			else if (vol <= 40.0 && vol >= 21.0)
+			{
+				defaultPlaybackDevice.Volume = 60.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar3);
+			}
+			else if (vol <= 60.0 && vol >= 41.0)
+			{
+				defaultPlaybackDevice.Volume = 80.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar4);
+			}
+			else if (vol <= 80.0 && vol >= 71.0)
+			{
+				defaultPlaybackDevice.Volume = 100.0;
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar5);
+			}
+			else if (vol <= 100.0 && vol >= 81.0)
+			{
+				_serialPort.WriteLine(CmdsOutbound.OOPVolBar5);
+			}
 		}
 
 		private void daemonconnectbut_Click(object sender, EventArgs e)

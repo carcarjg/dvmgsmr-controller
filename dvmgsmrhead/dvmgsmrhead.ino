@@ -91,6 +91,18 @@ const String IOPTxMOde = "at$txm";
 const String IOPNoTXMOde = "at!txm";
 //Reboot
 const String IOPReboot = "at@rbt";
+//Volume Bar 0
+const String IOPVolBar0 = "at$vo0";
+//Volume Bar 1
+const String IOPVolBar1 = "at$vo1";
+//Volume Bar 2
+const String IOPVolBar2 = "at$vo2";
+//Volume Bar 3
+const String IOPVolBar3 = "at$vo3";
+//Volume Bar 4
+const String IOPVolBar4 = "at$vo4";
+//Volume Bar 5
+const String IOPVolBar5 = "at$vo5";
 
 ///Outbound
 //Outbound cmd to ack
@@ -163,6 +175,7 @@ unsigned long previousMillisSTAT = 0;
 unsigned long previousMillisEmrg = 0;
 unsigned long previousMillisEmrgBeep = 0;
 unsigned long previousMillisErrMSG = 0;
+unsigned long previousMillisVolMSG = 0;
 
 unsigned long lastctrlOKMillis = 0;
 int missedStatusChecks;
@@ -173,6 +186,7 @@ bool rxemrgcallenable;
 bool rxcallphase;
 bool rxemrgcallphase;
 bool errormsgshow;
+bool volmsgshow;
 int country = 0;
 
 char keys[ROW_NUM][COLUMN_NUM] = {
@@ -326,6 +340,17 @@ void loop() {
       lcd.setCursor(0, 2);
       lcd.print("                   ");
       errormsgshow = false;
+    }
+  }
+
+  if (currentMillis - previousMillisVolMSG >= 5000) {
+    previousMillisVolMSG = currentMillis;
+    if (volmsgshow == true) {
+      lcd.setCursor(0, 1);
+      lcd.print("                   ");
+      lcd.setCursor(0, 2);
+      lcd.print("                   ");
+      volmsgshow = false;
     }
   }
 
@@ -834,6 +859,78 @@ void loop() {
       } else {
         lcd.print("GSM-R DVM");
       }
+    } else if (cmdfromserial == IOPVolBar0) {
+      lcd.setCursor(0, 1);
+      lcd.print("Speaker volume     ");
+      lcd.setCursor(0, 2);
+      lcd.print("<     >");
+      volmsgshow = true;
+      previousMillisVolMSG = currentMillis;
+    } else if (cmdfromserial == IOPVolBar1) {
+      lcd.setCursor(0, 1);
+      lcd.print("Speaker volume     ");
+      lcd.setCursor(0, 2);
+      lcd.print("<     >");
+      lcd.setCursor(1, 2);
+      lcd.write(255);
+      volmsgshow = true;
+      previousMillisVolMSG = currentMillis;
+    } else if (cmdfromserial == IOPVolBar2) {
+      lcd.setCursor(0, 1);
+      lcd.print("Speaker volume     ");
+      lcd.setCursor(0, 2);
+      lcd.print("<     >");
+      lcd.setCursor(1, 2);
+      lcd.write(255);
+      lcd.setCursor(2, 2);
+      lcd.write(255);
+      volmsgshow = true;
+      previousMillisVolMSG = currentMillis;
+    } else if (cmdfromserial == IOPVolBar3) {
+      lcd.setCursor(0, 1);
+      lcd.print("Speaker volume     ");
+      lcd.setCursor(0, 2);
+      lcd.print("<     >");
+      lcd.setCursor(1, 2);
+      lcd.write(255);
+      lcd.setCursor(2, 2);
+      lcd.write(255);
+      lcd.setCursor(3, 2);
+      lcd.write(255);
+      volmsgshow = true;
+      previousMillisVolMSG = currentMillis;
+    } else if (cmdfromserial == IOPVolBar4) {
+      lcd.setCursor(0, 1);
+      lcd.print("Speaker volume     ");
+      lcd.setCursor(0, 2);
+      lcd.print("<     >");
+      lcd.setCursor(1, 2);
+      lcd.write(255);
+      lcd.setCursor(2, 2);
+      lcd.write(255);
+      lcd.setCursor(3, 2);
+      lcd.write(255);
+      lcd.setCursor(4, 2);
+      lcd.write(255);
+      volmsgshow = true;
+      previousMillisVolMSG = currentMillis;
+    } else if (cmdfromserial == IOPVolBar5) {
+      lcd.setCursor(0, 1);
+      lcd.print("Speaker volume     ");
+      lcd.setCursor(0, 2);
+      lcd.print("<     >");
+      lcd.setCursor(1, 2);
+      lcd.write(255);
+      lcd.setCursor(2, 2);
+      lcd.write(255);
+      lcd.setCursor(3, 2);
+      lcd.write(255);
+      lcd.setCursor(4, 2);
+      lcd.write(255);
+      lcd.setCursor(5, 2);
+      lcd.write(255);
+      volmsgshow = true;
+      previousMillisVolMSG = currentMillis;
     }
   }
 }
