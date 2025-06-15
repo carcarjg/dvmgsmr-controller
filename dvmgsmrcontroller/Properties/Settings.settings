@@ -2,16 +2,22 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="dvmgsmrcontroller.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="serialport" Type="System.String" Scope="Application">
+    <Setting Name="serialport" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="daemonport" Type="System.String" Scope="Application">
+    <Setting Name="daemonport" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="daemonaddr" Type="System.String" Scope="Application">
+    <Setting Name="daemonaddr" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="gsmrctry" Type="System.String" Scope="Application">
+    <Setting Name="gsmrctry" Type="System.String" Scope="User">
+      <Value Profile="(Default)">99</Value>
+    </Setting>
+    <Setting Name="txaudio" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="rxaudio" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

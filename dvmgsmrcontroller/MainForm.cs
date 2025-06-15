@@ -12,12 +12,15 @@ using System.Windows.Forms;
 using AudioSwitcher.AudioApi.CoreAudio;
 using HeadComLib;
 using Microsoft.VisualBasic.Logging;
+using NAudio.Dsp;
 
 namespace dvmgsmrcontroller
 {
 	public partial class MainForm : Form
 	{
 		private SerialPort _serialPort;
+
+		private bool hconnectstatus;
 
 		private string currentcmd;
 
@@ -46,6 +49,14 @@ namespace dvmgsmrcontroller
 		private int lastkppressreg;
 
 		private CoreAudioDevice defaultPlaybackDevice = new CoreAudioController().DefaultPlaybackDevice;
+
+		private int gsmrctry;
+
+		private bool headstatus;
+
+		private DateTime lasttimeack;
+
+		private int counttoStart = 10;
 
 		/// <summary>
 		/// Regprocess
@@ -83,8 +94,24 @@ namespace dvmgsmrcontroller
 			try
 			{
 				daemonaddrTXT.Text = Properties.Settings.Default.daemonaddr;
+				daemonptTXT.Text = Properties.Settings.Default.daemonport;
+				countryTXT.Text = Properties.Settings.Default.gsmrctry;
+
+				serialportlistbox.SelectedIndex = -1;
+
+				for (int index = 0; index < serialportlistbox.Items.Count; index++)
+				{
+					serialportlistbox.SelectedIndex = index;
+					if (serialportlistbox.Text == Properties.Settings.Default.serialport)
+					{
+						serialportlistbox.SelectedIndex = index;
+						break;
+					}
+				}
 			}
 			catch (Exception ex) { }
+			autoconnectTMR.Enabled = true;
+			autoconnectTMR.Start();
 		}
 
 		private void connectbutton_Click(object sender, EventArgs e)
@@ -94,6 +121,10 @@ namespace dvmgsmrcontroller
 			_serialPort.BaudRate = 115200;
 			_serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
 			_serialPort.Open();
+			connectbutton.Enabled = false;
+			autoconnectTMR.Enabled = false;
+			autoconnectTMR.Stop();
+			_serialPort.WriteLine(CmdsOutbound.OOPControllerReady);
 		}
 
 		private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -108,10 +139,14 @@ namespace dvmgsmrcontroller
 			switch (rxcmd)
 			{
 				case CmdsInbound.IOPack:
+					headstatus = true;
+					lasttimeack = DateTime.Now;
 					break;
 
 				case CmdsInbound.IOPHeadReady:
 					_serialPort.WriteLine(CmdsOutbound.OOPControllerReady);
+					_serialPort.WriteLine(CmdsOutbound.OOPCountrySet + Properties.Settings.Default.gsmrctry);
+					hconnectstatus = true;
 					break;
 
 				case CmdsInbound.IOPnack:
@@ -139,11 +174,13 @@ namespace dvmgsmrcontroller
 					break;
 
 				case CmdsInbound.IOPb8:
+					volumedn();
 
 					//Vol Dn
 					break;
 
 				case CmdsInbound.IOPb9:
+					volumeup();
 
 					//Vol Up
 					break;
@@ -903,19 +940,66 @@ namespace dvmgsmrcontroller
 
 		private void volumedn()
 		{
-			if (defaultPlaybackDevice.Volume <= 25 && defaultPlaybackDevice.Volume >= 0) { }
-			defaultPlaybackDevice.Volume = 80;
+			if (defaultPlaybackDevice.Volume <= 25 && defaultPlaybackDevice.Volume >= 0)
+			{
+				//s
+			}
+
+			//defaultPlaybackDevice.Volume = 80;
 		}
 
 		private void volumeup()
 		{
 			Debug.WriteLine("Current Volume:" + defaultPlaybackDevice.Volume);
-			defaultPlaybackDevice.Volume = 80;
+
+			//defaultPlaybackDevice.Volume = 80;
 		}
 
 		private void daemonconnectbut_Click(object sender, EventArgs e)
 		{
 			//Add WEB RTC Bs here
+		}
+
+		private void saveBUT_Click(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.daemonaddr = daemonaddrTXT.Text;
+			Properties.Settings.Default.daemonport = daemonptTXT.Text;
+			Properties.Settings.Default.serialport = serialportlistbox.Text;
+			Properties.Settings.Default.gsmrctry = countryTXT.Text;
+			Properties.Settings.Default.Save();
+		}
+
+		private void autoconnectTMR_Tick(object sender, EventArgs e)
+		{
+			if (counttoStart == 0)
+			{
+				autoconnectTMR.Stop();
+				autoconnectTMR.Enabled = false;
+				connectbutton_Click(sender, e);
+				daemonconnectbut_Click(sender, e);
+			}
+			else { counttoStart--; asCountLAB.Text = counttoStart.ToString(); }
+		}
+
+		private void headtimeoutTMR_Tick(object sender, EventArgs e)
+		{
+			if (headstatus == false && hconnectstatus == true)
+			{
+				Console.Beep();
+			}
+			TimeSpan timeoutDuration = TimeSpan.FromSeconds(30);
+			if (DateTime.Now - lasttimeack > timeoutDuration && hconnectstatus == true)
+			{
+				headstatus = false;
+				_serialPort.WriteLine(CmdsOutbound.OOPReqStatus);
+			}
+		}
+
+		private void ASstopButt_Click(object sender, EventArgs e)
+		{
+			autoconnectTMR.Stop();
+			counttoStart = 10;
+			asCountLAB.Text = "NA";
 		}
 	}
 }

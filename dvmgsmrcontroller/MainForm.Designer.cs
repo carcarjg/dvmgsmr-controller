@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			components = new System.ComponentModel.Container();
 			connectbutton = new Button();
 			serialportlistbox = new ComboBox();
 			comboBox1 = new ComboBox();
@@ -39,6 +40,14 @@
 			daemonaddrTXT = new TextBox();
 			daemonptTXT = new TextBox();
 			daemonconnectbut = new Button();
+			saveBUT = new Button();
+			countryTXT = new TextBox();
+			ctryLAB = new Label();
+			autoconnectTMR = new System.Windows.Forms.Timer(components);
+			autostartLEB = new Label();
+			asCountLAB = new Label();
+			headtimeoutTMR = new System.Windows.Forms.Timer(components);
+			ASstopButt = new Button();
 			SuspendLayout();
 			// 
 			// connectbutton
@@ -135,6 +144,72 @@
 			daemonconnectbut.UseVisualStyleBackColor = true;
 			daemonconnectbut.Click += daemonconnectbut_Click;
 			// 
+			// saveBUT
+			// 
+			saveBUT.Location = new Point(275, 217);
+			saveBUT.Name = "saveBUT";
+			saveBUT.Size = new Size(121, 23);
+			saveBUT.TabIndex = 11;
+			saveBUT.Text = "Save";
+			saveBUT.UseVisualStyleBackColor = true;
+			saveBUT.Click += saveBUT_Click;
+			// 
+			// countryTXT
+			// 
+			countryTXT.Location = new Point(275, 102);
+			countryTXT.Name = "countryTXT";
+			countryTXT.Size = new Size(121, 23);
+			countryTXT.TabIndex = 12;
+			// 
+			// ctryLAB
+			// 
+			ctryLAB.AutoSize = true;
+			ctryLAB.Location = new Point(208, 105);
+			ctryLAB.Name = "ctryLAB";
+			ctryLAB.Size = new Size(50, 15);
+			ctryLAB.TabIndex = 13;
+			ctryLAB.Text = "Country";
+			// 
+			// autoconnectTMR
+			// 
+			autoconnectTMR.Enabled = true;
+			autoconnectTMR.Interval = 1000;
+			autoconnectTMR.Tick += autoconnectTMR_Tick;
+			// 
+			// autostartLEB
+			// 
+			autostartLEB.AutoSize = true;
+			autostartLEB.Location = new Point(275, 199);
+			autostartLEB.Name = "autostartLEB";
+			autostartLEB.Size = new Size(73, 15);
+			autostartLEB.TabIndex = 14;
+			autostartLEB.Text = "AutoStart In:";
+			// 
+			// asCountLAB
+			// 
+			asCountLAB.AutoSize = true;
+			asCountLAB.Location = new Point(352, 198);
+			asCountLAB.Name = "asCountLAB";
+			asCountLAB.Size = new Size(19, 15);
+			asCountLAB.TabIndex = 15;
+			asCountLAB.Text = "10";
+			// 
+			// headtimeoutTMR
+			// 
+			headtimeoutTMR.Enabled = true;
+			headtimeoutTMR.Interval = 2000;
+			headtimeoutTMR.Tick += headtimeoutTMR_Tick;
+			// 
+			// ASstopButt
+			// 
+			ASstopButt.Location = new Point(377, 195);
+			ASstopButt.Name = "ASstopButt";
+			ASstopButt.Size = new Size(39, 21);
+			ASstopButt.TabIndex = 16;
+			ASstopButt.Text = "Stop";
+			ASstopButt.UseVisualStyleBackColor = true;
+			ASstopButt.Click += ASstopButt_Click;
+			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -142,6 +217,12 @@
 			BackgroundImage = Properties.Resources._48450756326_5aab7b8186_b;
 			BackgroundImageLayout = ImageLayout.Center;
 			ClientSize = new Size(800, 450);
+			Controls.Add(ASstopButt);
+			Controls.Add(asCountLAB);
+			Controls.Add(autostartLEB);
+			Controls.Add(ctryLAB);
+			Controls.Add(countryTXT);
+			Controls.Add(saveBUT);
 			Controls.Add(daemonconnectbut);
 			Controls.Add(daemonptTXT);
 			Controls.Add(daemonaddrTXT);
@@ -169,8 +250,16 @@
 		private Label rxaudiolabel;
 		private Label daemonportlabel;
 		private Label daemonaddrlabel;
-		private TextBox daemonaddrTXT;
-		private TextBox daemonptTXT;
 		private Button daemonconnectbut;
+		private Button saveBUT;
+		private TextBox countryTXT;
+		private Label ctryLAB;
+		private System.Windows.Forms.Timer autoconnectTMR;
+		internal TextBox daemonaddrTXT;
+		internal TextBox daemonptTXT;
+		private Label autostartLEB;
+		private Label asCountLAB;
+		private System.Windows.Forms.Timer headtimeoutTMR;
+		private Button ASstopButt;
 	}
 }
