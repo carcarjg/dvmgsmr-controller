@@ -286,6 +286,8 @@ namespace dvmgsmrcontroller
 				case CmdsInbound.IOPkpCross:
 					break;
 
+				#region buttons
+
 				case CmdsInbound.IOPkp1:
 					if (reginprocess == 1)
 					{
@@ -935,6 +937,8 @@ namespace dvmgsmrcontroller
 						}
 					}
 					break;
+
+					#endregion buttons
 			}
 		}
 
