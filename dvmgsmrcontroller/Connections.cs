@@ -2,6 +2,8 @@
 using SIPSorcery.Net;
 using WebSocketSharp;
 using Windows.Media.Playback;
+using Newtonsoft.Json;
+using TinyJson;
 
 namespace dvmgsmrcontroller
 {
@@ -23,8 +25,26 @@ namespace dvmgsmrcontroller
 
 					//ws://URL:PORT/rtc for RTC
 					WS.OnMessage += OnMessage;
+					WS.OnOpen += OnConnect;
+					WS.OnClose += OnClose;
+					WS.OnError += OnError;
 				}
 			}
+		}
+
+		private void OnError(object? sender, WebSocketSharp.ErrorEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void OnClose(object? sender, CloseEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void OnConnect(object? sender, EventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		internal void Stop()
@@ -32,6 +52,18 @@ namespace dvmgsmrcontroller
 
 		internal void OnMessage(object? sender, MessageEventArgs e)
 		{
+			var msg = e.Data;
+
+			if (msg == null) { return; }
+
+			Serilog.Log.Verbose($"Got client message from websocket: {msg}");
+			dynamic jsonObj = JsonConvert.DeserializeObject(msg);
+
+			if (jsonObj == null)
+			{
+				Serilog.Log.Logger.Warning("Unable to decode data from websocket!");
+				return;
+			}
 		}
 	}
 }
