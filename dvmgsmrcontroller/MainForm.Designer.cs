@@ -48,6 +48,8 @@
 			asCountLAB = new Label();
 			headtimeoutTMR = new System.Windows.Forms.Timer(components);
 			ASstopButt = new Button();
+			ridinboundBOX = new TextBox();
+			label1 = new Label();
 			SuspendLayout();
 			// 
 			// connectbutton
@@ -210,6 +212,22 @@
 			ASstopButt.UseVisualStyleBackColor = true;
 			ASstopButt.Click += ASstopButt_Click;
 			// 
+			// ridinboundBOX
+			// 
+			ridinboundBOX.Location = new Point(619, 12);
+			ridinboundBOX.Name = "ridinboundBOX";
+			ridinboundBOX.Size = new Size(100, 23);
+			ridinboundBOX.TabIndex = 17;
+			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new Point(514, 15);
+			label1.Name = "label1";
+			label1.Size = new Size(99, 15);
+			label1.TabIndex = 21;
+			label1.Text = "Inbound Radio ID";
+			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -217,6 +235,8 @@
 			BackgroundImage = Properties.Resources._48450756326_5aab7b8186_b;
 			BackgroundImageLayout = ImageLayout.Center;
 			ClientSize = new Size(800, 450);
+			Controls.Add(label1);
+			Controls.Add(ridinboundBOX);
 			Controls.Add(ASstopButt);
 			Controls.Add(asCountLAB);
 			Controls.Add(autostartLEB);
@@ -261,5 +281,7 @@
 		private Label asCountLAB;
 		private System.Windows.Forms.Timer headtimeoutTMR;
 		private Button ASstopButt;
+		private TextBox ridinboundBOX;
+		private Label label1;
 	}
 }
