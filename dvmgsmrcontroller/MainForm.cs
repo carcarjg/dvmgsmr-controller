@@ -13,6 +13,12 @@ using AudioSwitcher.AudioApi.CoreAudio;
 using HeadComLib;
 using Microsoft.VisualBasic.Logging;
 using NAudio.Dsp;
+using Constants = fnecore.Constants;
+using fnecore;
+using fnecore.DMR;
+using fnecore.P25;
+using fnecore.P25.KMM;
+using fnecore.P25.LC.TSBK;
 
 namespace dvmgsmrcontroller
 {
