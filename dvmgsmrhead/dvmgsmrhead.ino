@@ -267,7 +267,7 @@ void setup() {
     lcd.setCursor(2, 0);
     lcd.print("DVM GSM-R SR0.1B");
     lcd.setCursor(3, 1);
-    lcd.print("Service Pack 2B");
+    lcd.print("UIC RICS: 5670");
     lcd.setCursor(5, 2);
     lcd.print("**WARNING**");
     lcd.setCursor(4, 3);
