@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.ComponentModel.Design;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using AudioSwitcher.AudioApi.CoreAudio;
 using HeadComLib;
-using Microsoft.VisualBasic.Logging;
-using NAudio.Dsp;
 
 namespace dvmgsmrcontroller
 {
@@ -1014,7 +1003,25 @@ namespace dvmgsmrcontroller
 
 		private void daemonconnectbut_Click(object sender, EventArgs e)
 		{
-			//Add WEB RTC Bs here
+			int RXA = 0;
+			int TXA = 0;
+			int WSP = 0;
+			string WSA = daemonaddrTXT.Text;
+
+			try { WSP = int.Parse(daemonptTXT.Text); }
+			catch (Exception ex)
+			{
+				MessageBox.Show("Please enter a Daemon address and port, k thx bye");
+			}
+
+			if (WSA != null)
+			{
+				Connections.RC2(WSA, WSP, TXA, RXA);
+			}
+			else
+			{
+				MessageBox.Show("Please enter a Daemon address");
+			}
 		}
 
 		private void saveBUT_Click(object sender, EventArgs e)

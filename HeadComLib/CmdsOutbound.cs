@@ -96,7 +96,7 @@
 		public const string OOPErrorAndClear = "at!eac";
 
 		//RebootHEad
-		public const string IOPReboot = "at@rbt";
+		public const string OOPReboot = "at@rbt";
 
 		//Set GSM-R Country
 		public const string OOPCountrySet = "at%ctr";
