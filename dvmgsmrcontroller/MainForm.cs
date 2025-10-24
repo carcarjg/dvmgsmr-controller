@@ -2,6 +2,7 @@
 using System.IO.Ports;
 using AudioSwitcher.AudioApi.CoreAudio;
 using HeadComLib;
+using RC2ClientLibrary;
 
 namespace dvmgsmrcontroller
 {
@@ -18,6 +19,8 @@ namespace dvmgsmrcontroller
 		private string[] headcoderegproc = { "", "", "", "", "", "", "", "" };
 
 		private string afftg;
+
+		private static readonly CancellationTokenSource cts = new CancellationTokenSource();
 
 		private int kp2press;
 
@@ -79,6 +82,18 @@ namespace dvmgsmrcontroller
 			{
 				serialportlistbox.Items.Add(port);
 			}
+
+			// Show available audio devices
+			foreach (var dev in RC2Client.GetInputDevices())
+			{
+				txaudioCMBO.Items.Insert(dev.DeviceNumber, dev.Name);
+			}
+
+			foreach (var dev in RC2Client.GetOutputDevices())
+			{
+				rxaudioCMBO.Items.Insert(dev.DeviceNumber, dev.Name);
+			}
+
 			currentcmd = "hcnk";
 			try
 			{
@@ -1008,6 +1023,8 @@ namespace dvmgsmrcontroller
 			int WSP = 0;
 			string WSA = daemonaddrTXT.Text;
 
+			RXA = rxaudioCMBO.SelectedIndex;
+			TXA = txaudioCMBO.SelectedIndex;
 			try { WSP = int.Parse(daemonptTXT.Text); }
 			catch (Exception ex)
 			{
@@ -1016,7 +1033,7 @@ namespace dvmgsmrcontroller
 
 			if (WSA != null)
 			{
-				Connections.RC2(WSA, WSP, TXA, RXA);
+				Connections.RC2(cts.Token, WSA, WSP, TXA, RXA);
 			}
 			else
 			{

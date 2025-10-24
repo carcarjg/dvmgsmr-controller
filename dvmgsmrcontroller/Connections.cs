@@ -4,17 +4,10 @@ namespace dvmgsmrcontroller
 {
 	internal class Connections
 	{
-		internal static async Task RC2(string RC2addr, int RC2port, int txaudio, int rxaudio)
+		public bool stop = false;
+
+		internal static async Task RC2(CancellationToken token, string RC2addr, int RC2port, int txaudio, int rxaudio)
 		{
-			// Show available audio devices
-			Console.WriteLine("Input Devices:");
-			foreach (var dev in RC2Client.GetInputDevices())
-				Console.WriteLine($"  [{dev.DeviceNumber}] {dev.Name}");
-
-			Console.WriteLine("\nOutput Devices:");
-			foreach (var dev in RC2Client.GetOutputDevices())
-				Console.WriteLine($"  [{dev.DeviceNumber}] {dev.Name}");
-
 			// Create and configure client
 			var client = new RC2Client(RC2addr, RC2port);
 			client.SetMicrophoneDevice(txaudio);
@@ -45,6 +38,10 @@ namespace dvmgsmrcontroller
 				// Interactive command loop
 				while (true)
 				{
+					if (token.IsCancellationRequested == true)
+					{
+						client.Disconnect();
+					}
 					/*
 					client.QueryStatus();
 					await Task.Delay(500);

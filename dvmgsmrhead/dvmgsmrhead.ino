@@ -642,7 +642,7 @@ void loop() {
       lcd.print("             ");
     } else if (cmdfromserial == IOPReboot) {
       Serial.println(OOPack);
-      digitalWrite(48, LOW);
+      setup();
     } else if (cmdfromserial == IOPHcb0) {
       Serial.println(OOPack);
       String text = readfromserial.substring(6, readfromserial.length());
