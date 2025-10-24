@@ -51,6 +51,7 @@
 			ridinboundBOX = new TextBox();
 			label1 = new Label();
 			label2 = new Label();
+			discoallBUT = new Button();
 			SuspendLayout();
 			// 
 			// connectbutton
@@ -257,6 +258,16 @@
 			label2.TabIndex = 22;
 			label2.Text = "THIS DOESNT WORK DUE TO RC2";
 			// 
+			// discoallBUT
+			// 
+			discoallBUT.Location = new Point(393, 417);
+			discoallBUT.Name = "discoallBUT";
+			discoallBUT.Size = new Size(173, 34);
+			discoallBUT.TabIndex = 23;
+			discoallBUT.Text = "Exit";
+			discoallBUT.UseVisualStyleBackColor = true;
+			discoallBUT.Click += discoallBUT_Click;
+			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
@@ -264,6 +275,7 @@
 			BackgroundImage = Properties.Resources._48450756326_5aab7b8186_b;
 			BackgroundImageLayout = ImageLayout.Center;
 			ClientSize = new Size(1143, 750);
+			Controls.Add(discoallBUT);
 			Controls.Add(label2);
 			Controls.Add(label1);
 			Controls.Add(ridinboundBOX);
@@ -287,6 +299,7 @@
 			Margin = new Padding(4, 5, 4, 5);
 			Name = "MainForm";
 			Text = "MainForm";
+			FormClosing += MainForm_FormClosing;
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -315,5 +328,6 @@
 		private TextBox ridinboundBOX;
 		private Label label1;
 		private Label label2;
+		private Button discoallBUT;
 	}
 }

@@ -56,22 +56,6 @@ namespace dvmgsmrcontroller
 					Console.WriteLine($"WebSocket Connected: {client.IsWebSocketConnected}");
 					Console.WriteLine($"WebRTC Connected: {client.IsWebRtcConnected}");
 					*/
-					/*
-					Console.Write("Command (q=query, t=tx, s=stop, u=up, d=down, x=exit): ");
-					var cmd = Console.ReadLine()?.ToLower();
-
-					switch (cmd)
-					{
-						case "q": client.QueryStatus(); break;
-						case "t": client.StartTransmit(); break;
-						case "s": client.StopTransmit(); break;
-						case "u": client.ChannelUp(); break;
-						case "d": client.ChannelDown(); break;
-						case "x":
-							client.Disconnect();
-							return;
-					}
-					*/
 					await Task.Delay(100);
 				}
 			}

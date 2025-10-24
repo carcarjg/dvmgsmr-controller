@@ -1082,5 +1082,23 @@ namespace dvmgsmrcontroller
 			counttoStart = 10;
 			asCountLAB.Text = "NA";
 		}
+
+		private void discoallBUT_Click(object sender, EventArgs e)
+		{
+			teardown();
+		}
+
+		private void teardown()
+		{
+			//Stop Websocket and WebRTC Connections
+			cts.Cancel();
+			_serialPort.WriteLine(CmdsOutbound.OOPReboot);
+			Application.Exit();
+		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			teardown();
+		}
 	}
 }

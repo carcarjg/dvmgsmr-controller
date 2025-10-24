@@ -95,5 +95,11 @@
 
 		//Inbound cmd KeyPad D
 		public const string IOPkpCross = "at#crs";
+
+		//Inbount cmd PTT KeyUp
+		public const string IOPpttk = "at#pt1";
+
+		//Inbount cmd PTT KeyDown/Dekey
+		public const string IOPpttdk = "at!pt1";
 	}
 }

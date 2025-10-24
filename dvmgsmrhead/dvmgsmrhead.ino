@@ -14,6 +14,7 @@ const int Pb6 = 25;
 const int Pb7 = 24;
 const int Pb8 = 23;
 const int Pb9 = 22;
+const int PT1 = 41;
 
 String headcode;
 String channel;
@@ -112,6 +113,11 @@ const String OOPnack = "at!ack";
 //Outbound Head ready CMD
 const String OOPHeadReady = "at&hok";
 
+//Outbound cmd PTT Key
+const String OOPpttk = "at#pt1";
+//Outbound cmd PTT DeKey
+const String OOPpttdk = "at!pt1";
+
 //Outbound cmd Button1
 const String OOPb1 = "at#b01";
 //Outbound cmd Button2
@@ -187,6 +193,7 @@ bool rxcallphase;
 bool rxemrgcallphase;
 bool errormsgshow;
 bool volmsgshow;
+bool ACTIVEPTT = false;
 int country = 0;
 
 char keys[ROW_NUM][COLUMN_NUM] = {
@@ -213,6 +220,7 @@ void setup() {
   pinMode(Pb7, INPUT);
   pinMode(Pb8, INPUT);
   pinMode(Pb9, INPUT);
+  pinMode(PT1, INPUT);
   pinMode(11, OUTPUT);
   digitalWrite(48, HIGH);
   pinMode(48, OUTPUT);
@@ -305,7 +313,6 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-
   if (currentMillis - previousMillisEmrg >= 500) {
     previousMillisEmrg = currentMillis;
     if (rxemrgcallenable == true) {
@@ -353,7 +360,6 @@ void loop() {
       volmsgshow = false;
     }
   }
-
   //RXCallBlinky
   if (currentMillis - previousMillisRX >= 500) {
     previousMillisRX = currentMillis;
@@ -370,7 +376,16 @@ void loop() {
     }
   }
 
-  if (digitalRead(EmrgButPb1) == LOW) {
+  if (digitalRead(PT1) == LOW && ACTIVEPTT == true){
+    delay(400);
+    ACTIVEPTT = false;
+    Serial.println(OOPpttdk);
+  } else if(digitalRead(PT1) == HIGH && ACTIVEPTT == false){
+    delay(200);
+    ACTIVEPTT = true;
+    Serial.println(OOPpttk);
+    tone(11, 750, 100);
+  } else if (digitalRead(EmrgButPb1) == LOW) {
     delay(400);
     Serial.println(OOPb1);
     delay(400);
@@ -423,7 +438,6 @@ void loop() {
     delay(200);
     tone(11, 1976, 100);
   }
-
   char keypress = keypad.getKey();
   switch (keypress) {
     case '1':
