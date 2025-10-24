@@ -18,6 +18,8 @@ namespace dvmgsmrcontroller
 
 		private string[] headcoderegproc = { "", "", "", "", "", "", "", "" };
 
+		private bool actcall;
+
 		private string afftg;
 
 		private static readonly CancellationTokenSource cts = new CancellationTokenSource();
@@ -160,6 +162,7 @@ namespace dvmgsmrcontroller
 					break;
 
 				case CmdsInbound.IOPb2:
+					//_serialPort.Write(CmdsOutbound.OOPdsdOn);
 					break;
 
 				case CmdsInbound.IOPb3:
@@ -288,6 +291,23 @@ namespace dvmgsmrcontroller
 					break;
 
 				case CmdsInbound.IOPkpCross:
+					break;
+
+				///PTT HANDLE
+				case CmdsInbound.IOPpttk:
+					if (actcall == false /*&& regstatus == true*/)
+					{
+						actcall = true;
+						_serialPort.WriteLine(CmdsOutbound.OOPTxMOde);
+					}
+					break;
+
+				case CmdsInbound.IOPpttdk:
+					if (actcall == true)
+					{
+						actcall = false;
+						_serialPort.WriteLine(CmdsOutbound.OOPNoTXMOde);
+					}
 					break;
 
 				#region buttons

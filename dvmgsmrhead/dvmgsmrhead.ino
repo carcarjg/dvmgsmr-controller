@@ -385,7 +385,8 @@ void loop() {
     ACTIVEPTT = true;
     Serial.println(OOPpttk);
     tone(11, 750, 100);
-  } else if (digitalRead(EmrgButPb1) == LOW) {
+  } 
+  if (digitalRead(EmrgButPb1) == LOW) {
     delay(400);
     Serial.println(OOPb1);
     delay(400);
