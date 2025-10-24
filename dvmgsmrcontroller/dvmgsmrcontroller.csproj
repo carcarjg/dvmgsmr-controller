@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HeadComLib\HeadComLib.csproj" />
-    <ProjectReference Include="..\RC2Client\RC2Client.csproj" />
+    <ProjectReference Include="..\RC2-Client\RC2Client\RC2Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

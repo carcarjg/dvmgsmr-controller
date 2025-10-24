@@ -4,7 +4,15 @@ namespace dvmgsmrcontroller
 {
 	internal class Connections
 	{
-		public bool stop = false;
+		internal static bool WSC;
+
+		internal static bool RTCC;
+
+		internal static bool RTTX;
+
+		internal static string CCH = "";
+
+		internal static string CID = "";
 
 		internal static async Task RC2(CancellationToken token, string RC2addr, int RC2port, int txaudio, int rxaudio)
 		{
@@ -18,11 +26,18 @@ namespace dvmgsmrcontroller
 			client.WebRtcConnected += (s, e) => Console.WriteLine("RTC Connected");
 			client.StatusReceived += (s, status) =>
 			{
+				/*
 				Console.WriteLine($"Status: {status.Name}");
 				Console.WriteLine($"  Zone: {status.ZoneName}");
 				Console.WriteLine($"  Channel: {status.ChannelName}");
 				Console.WriteLine($"  State: {status.State}");
-				Console.WriteLine($"  Caller: {status.CallerId}");
+				Console.WriteLine($"  Caller: {status.CallerId}"); */
+
+				CID = status.CallerId;
+				CCH = status.ChannelName;
+				WSC = client.IsWebSocketConnected;
+				RTCC = client.IsWebRtcConnected;
+				RTTX = client.IsTransmitting;
 
 				//TODO: use above data to trigger stuff on the CH
 			};
@@ -42,20 +57,6 @@ namespace dvmgsmrcontroller
 					{
 						client.Disconnect();
 					}
-					/*
-					client.QueryStatus();
-					await Task.Delay(500);
-
-					// Access stored data
-					var status = client.CurrentStatus;
-					Console.WriteLine($"Radio Name: {status.Name}");
-					Console.WriteLine($"Current Channel: {status.ChannelName}");
-					Console.WriteLine($"Current Zone: {status.ZoneName}");
-					Console.WriteLine($"State: {status.State}");
-					Console.WriteLine($"Is Transmitting: {client.IsTransmitting}");
-					Console.WriteLine($"WebSocket Connected: {client.IsWebSocketConnected}");
-					Console.WriteLine($"WebRTC Connected: {client.IsWebRtcConnected}");
-					*/
 					await Task.Delay(100);
 				}
 			}
