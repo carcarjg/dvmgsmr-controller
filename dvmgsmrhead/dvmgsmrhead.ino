@@ -31,7 +31,7 @@ const int Pb6 = 25;
 const int Pb7 = 24;
 const int Pb8 = 23;
 const int Pb9 = 22;
-const int PT1 = 41;
+const int PT1 = 42;
 
 String headcode;
 String channel;

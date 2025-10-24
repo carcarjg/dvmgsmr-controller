@@ -277,6 +277,7 @@
 			boopthesnoot.Name = "boopthesnoot";
 			boopthesnoot.Size = new Size(71, 48);
 			boopthesnoot.TabIndex = 24;
+			boopthesnoot.TabStop = false;
 			boopthesnoot.UseVisualStyleBackColor = false;
 			boopthesnoot.Click += boopthesnoot_Click;
 			// 
