@@ -120,6 +120,8 @@ namespace dvmgsmrcontroller
 				daemonaddrTXT.Text = Properties.Settings.Default.daemonaddr;
 				daemonptTXT.Text = Properties.Settings.Default.daemonport;
 				countryTXT.Text = Properties.Settings.Default.gsmrctry;
+				txaudioCMBO.TabIndex = Properties.Settings.Default.txaudio;
+				rxaudioCMBO.TabIndex = Properties.Settings.Default.rxaudio;
 
 				serialportlistbox.SelectedIndex = -1;
 
@@ -318,6 +320,7 @@ namespace dvmgsmrcontroller
 					{
 						actcall = true;
 						_serialPort.WriteLine(CmdsOutbound.OOPTxMOde);
+						Connections.TXR = true;
 					}
 					break;
 
@@ -325,6 +328,7 @@ namespace dvmgsmrcontroller
 					if (actcall == true)
 					{
 						actcall = false;
+						Connections.TXSR = true;
 						_serialPort.WriteLine(CmdsOutbound.OOPNoTXMOde);
 					}
 					break;
@@ -1086,6 +1090,8 @@ namespace dvmgsmrcontroller
 			Properties.Settings.Default.daemonport = daemonptTXT.Text;
 			Properties.Settings.Default.serialport = serialportlistbox.Text;
 			Properties.Settings.Default.gsmrctry = countryTXT.Text;
+			Properties.Settings.Default.rxaudio = rxaudioCMBO.TabIndex;
+			Properties.Settings.Default.txaudio = txaudioCMBO.TabIndex;
 			Properties.Settings.Default.Save();
 		}
 
@@ -1130,14 +1136,25 @@ namespace dvmgsmrcontroller
 		private void teardown()
 		{
 			//Stop Websocket and WebRTC Connections
-			cts.Cancel();
-			_serialPort.WriteLine(CmdsOutbound.OOPReboot);
+			try
+			{
+				cts.Cancel();
+				_serialPort.WriteLine(CmdsOutbound.OOPReboot);
+			}
+			catch (Exception) { }
+
 			Application.Exit();
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			teardown();
+		}
+
+		private void boopthesnoot_Click(object sender, EventArgs e)
+		{
+			DebugForm DF = new DebugForm();
+			DF.Show();
 		}
 	}
 }

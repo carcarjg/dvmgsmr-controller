@@ -52,6 +52,7 @@
 			label1 = new Label();
 			label2 = new Label();
 			discoallBUT = new Button();
+			boopthesnoot = new Button();
 			SuspendLayout();
 			// 
 			// connectbutton
@@ -268,6 +269,17 @@
 			discoallBUT.UseVisualStyleBackColor = true;
 			discoallBUT.Click += discoallBUT_Click;
 			// 
+			// boopthesnoot
+			// 
+			boopthesnoot.BackColor = Color.Transparent;
+			boopthesnoot.ForeColor = Color.Transparent;
+			boopthesnoot.Location = new Point(255, 377);
+			boopthesnoot.Name = "boopthesnoot";
+			boopthesnoot.Size = new Size(71, 48);
+			boopthesnoot.TabIndex = 24;
+			boopthesnoot.UseVisualStyleBackColor = false;
+			boopthesnoot.Click += boopthesnoot_Click;
+			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
@@ -275,6 +287,7 @@
 			BackgroundImage = Properties.Resources._48450756326_5aab7b8186_b;
 			BackgroundImageLayout = ImageLayout.Center;
 			ClientSize = new Size(1143, 750);
+			Controls.Add(boopthesnoot);
 			Controls.Add(discoallBUT);
 			Controls.Add(label2);
 			Controls.Add(label1);
@@ -329,5 +342,6 @@
 		private Label label1;
 		private Label label2;
 		private Button discoallBUT;
+		private Button boopthesnoot;
 	}
 }

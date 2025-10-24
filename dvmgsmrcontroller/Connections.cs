@@ -32,6 +32,10 @@ namespace dvmgsmrcontroller
 
 		internal static string CID = "";
 
+		internal static bool TXR;
+
+		internal static bool TXSR;
+
 		internal static async Task RC2(CancellationToken token, string RC2addr, int RC2port, int txaudio, int rxaudio)
 		{
 			// Create and configure client
@@ -75,6 +79,19 @@ namespace dvmgsmrcontroller
 					{
 						client.Disconnect();
 					}
+
+					if (TXR == true)
+					{
+						//TXRequested
+						client.StartTransmit();
+						TXR = false;
+					}
+					if (TXSR == true)
+					{
+						client.StopTransmit();
+						TXSR = false;
+					}
+
 					await Task.Delay(100);
 				}
 			}
