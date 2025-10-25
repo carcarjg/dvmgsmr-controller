@@ -40,6 +40,8 @@ namespace dvmgsmrcontroller
 
 		private string afftg;
 
+		private string booped;
+
 		private static readonly CancellationTokenSource cts = new CancellationTokenSource();
 
 		private int kp2press;
@@ -120,8 +122,8 @@ namespace dvmgsmrcontroller
 				daemonaddrTXT.Text = Properties.Settings.Default.daemonaddr;
 				daemonptTXT.Text = Properties.Settings.Default.daemonport;
 				countryTXT.Text = Properties.Settings.Default.gsmrctry;
-				txaudioCMBO.TabIndex = Properties.Settings.Default.txaudio;
-				rxaudioCMBO.TabIndex = Properties.Settings.Default.rxaudio;
+				txaudioCMBO.Text = Properties.Settings.Default.txaudio.ToString();
+				rxaudioCMBO.Text = Properties.Settings.Default.rxaudio.ToString();
 
 				serialportlistbox.SelectedIndex = -1;
 
@@ -316,20 +318,25 @@ namespace dvmgsmrcontroller
 
 				///PTT HANDLE
 				case CmdsInbound.IOPpttk:
-					if (actcall == false /*&& regstatus == true*/)
+					if (actcall == false && regstatus == true && Connections.TXC == false)
 					{
 						actcall = true;
 						_serialPort.WriteLine(CmdsOutbound.OOPTxMOde);
 						Connections.TXR = true;
+						Connections.TXC = true;
+						timeouttimer.Enabled = true;
+						timeouttimer.Start();
 					}
 					break;
 
 				case CmdsInbound.IOPpttdk:
-					if (actcall == true)
+					if (Connections.TXC == true)
 					{
 						actcall = false;
 						Connections.TXSR = true;
 						_serialPort.WriteLine(CmdsOutbound.OOPNoTXMOde);
+						Connections.TXC = false;
+						timeouttimer.Stop();
 					}
 					break;
 
@@ -1082,6 +1089,7 @@ namespace dvmgsmrcontroller
 			{
 				MessageBox.Show("Please enter a Daemon address");
 			}
+			rxcheckTMR.Start();
 		}
 
 		private void saveBUT_Click(object sender, EventArgs e)
@@ -1090,8 +1098,8 @@ namespace dvmgsmrcontroller
 			Properties.Settings.Default.daemonport = daemonptTXT.Text;
 			Properties.Settings.Default.serialport = serialportlistbox.Text;
 			Properties.Settings.Default.gsmrctry = countryTXT.Text;
-			Properties.Settings.Default.rxaudio = rxaudioCMBO.TabIndex;
-			Properties.Settings.Default.txaudio = txaudioCMBO.TabIndex;
+			Properties.Settings.Default.rxaudio = rxaudioCMBO.Text;
+			Properties.Settings.Default.txaudio = txaudioCMBO.Text;
 			Properties.Settings.Default.Save();
 		}
 
@@ -1111,7 +1119,7 @@ namespace dvmgsmrcontroller
 		{
 			if (headstatus == false && hconnectstatus == true)
 			{
-				Console.Beep();
+				//Console.Beep();
 			}
 			TimeSpan timeoutDuration = TimeSpan.FromSeconds(30);
 			if (DateTime.Now - lasttimeack > timeoutDuration && hconnectstatus == true)
@@ -1153,8 +1161,41 @@ namespace dvmgsmrcontroller
 
 		private void boopthesnoot_Click(object sender, EventArgs e)
 		{
-			DebugForm DF = new DebugForm();
-			DF.Show();
+			if (booped != "true")
+			{
+				booped = "true";
+			}
+			else if (booped == "true")
+			{
+				booped = "snoot";
+				DebugForm DF = new DebugForm();
+
+				DF.Show();
+			}
+		}
+
+		private void rxcheckTMR_Tick(object sender, EventArgs e)
+		{
+			if (Connections.RXC == true && actcall == false && Connections.CID != "0" && Connections.CID != "")
+			{
+				actcall = true;
+				string combined = CmdsOutbound.OOPRxRID + Connections.CID;
+				_serialPort.WriteLine(combined);
+				_serialPort.Write(CmdsOutbound.OOPRxCall);
+
+				ridinboundBOX.Text = Connections.CID;
+			}
+			else if (Connections.RXC == false && actcall == true)
+			{
+				actcall = false;
+				_serialPort.Write(CmdsOutbound.OOPNoRXCall);
+				Connections.CID = "0";
+			}
+		}
+
+		private void timeouttimer_Tick(object sender, EventArgs e)
+		{
+			timeouttimer.Stop();
 		}
 	}
 }

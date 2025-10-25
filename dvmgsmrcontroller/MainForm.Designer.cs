@@ -53,6 +53,8 @@
 			label2 = new Label();
 			discoallBUT = new Button();
 			boopthesnoot = new Button();
+			rxcheckTMR = new System.Windows.Forms.Timer(components);
+			timeouttimer = new System.Windows.Forms.Timer(components);
 			SuspendLayout();
 			// 
 			// connectbutton
@@ -217,7 +219,6 @@
 			// 
 			// headtimeoutTMR
 			// 
-			headtimeoutTMR.Enabled = true;
 			headtimeoutTMR.Interval = 2000;
 			headtimeoutTMR.Tick += headtimeoutTMR_Tick;
 			// 
@@ -253,7 +254,7 @@
 			// label2
 			// 
 			label2.AutoSize = true;
-			label2.Location = new Point(743, 23);
+			label2.Location = new Point(743, 50);
 			label2.Name = "label2";
 			label2.Size = new Size(282, 25);
 			label2.TabIndex = 22;
@@ -272,14 +273,25 @@
 			// boopthesnoot
 			// 
 			boopthesnoot.BackColor = Color.Transparent;
+			boopthesnoot.FlatStyle = FlatStyle.Popup;
 			boopthesnoot.ForeColor = Color.Transparent;
-			boopthesnoot.Location = new Point(255, 377);
+			boopthesnoot.Location = new Point(233, 382);
 			boopthesnoot.Name = "boopthesnoot";
-			boopthesnoot.Size = new Size(71, 48);
+			boopthesnoot.Size = new Size(116, 37);
 			boopthesnoot.TabIndex = 24;
 			boopthesnoot.TabStop = false;
 			boopthesnoot.UseVisualStyleBackColor = false;
 			boopthesnoot.Click += boopthesnoot_Click;
+			// 
+			// rxcheckTMR
+			// 
+			rxcheckTMR.Interval = 250;
+			rxcheckTMR.Tick += rxcheckTMR_Tick;
+			// 
+			// timeouttimer
+			// 
+			timeouttimer.Interval = 180000;
+			timeouttimer.Tick += timeouttimer_Tick;
 			// 
 			// MainForm
 			// 
@@ -344,5 +356,7 @@
 		private Label label2;
 		private Button discoallBUT;
 		private Button boopthesnoot;
+		private System.Windows.Forms.Timer rxcheckTMR;
+		private System.Windows.Forms.Timer timeouttimer;
 	}
 }

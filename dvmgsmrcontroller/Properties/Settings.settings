@@ -14,11 +14,11 @@
     <Setting Name="gsmrctry" Type="System.String" Scope="User">
       <Value Profile="(Default)">99</Value>
     </Setting>
-    <Setting Name="txaudio" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="txaudio" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="rxaudio" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="rxaudio" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

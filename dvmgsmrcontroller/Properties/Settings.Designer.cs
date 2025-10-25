@@ -73,10 +73,10 @@ namespace dvmgsmrcontroller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int txaudio {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string txaudio {
             get {
-                return ((int)(this["txaudio"]));
+                return ((string)(this["txaudio"]));
             }
             set {
                 this["txaudio"] = value;
@@ -85,10 +85,10 @@ namespace dvmgsmrcontroller.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int rxaudio {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string rxaudio {
             get {
-                return ((int)(this["rxaudio"]));
+                return ((string)(this["rxaudio"]));
             }
             set {
                 this["rxaudio"] = value;

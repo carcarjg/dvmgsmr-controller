@@ -261,6 +261,7 @@ bool errormsgshow;
 bool volmsgshow;
 bool ACTIVEPTT = false;
 int country = 0;
+String activeCID;
 
 char keys[ROW_NUM][COLUMN_NUM] = {
   { '1', '2', '3', 'A' },
@@ -382,7 +383,7 @@ void setup() {
 void loop() {
 	unsigned long currentMillis = millis();
 
-	if (currentMillis - previousMillisEmrg >= 500) {
+	if (currentMillis - previousMillisEmrg >= 500 && rxemrgcallenable == true) {
 		previousMillisEmrg = currentMillis;
 		if (rxemrgcallenable == true) {
 			if (rxemrgcallphase == true) {
@@ -402,7 +403,7 @@ void loop() {
 		}
 	}
 
-	if (currentMillis - previousMillisEmrgBeep >= 200) {
+	if (currentMillis - previousMillisEmrgBeep >= 200 && rxemrgcallenable == true) {
 		previousMillisEmrgBeep = currentMillis;
 		if (rxemrgcallenable == true) {
 			tone(11, 523, 180);
@@ -411,7 +412,7 @@ void loop() {
 		}
 	}
 
-	if (currentMillis - previousMillisErrMSG >= 2000) {
+	if (currentMillis - previousMillisErrMSG >= 2000 && errormsgshow == true) {
 		previousMillisErrMSG = currentMillis;
 		if (errormsgshow == true) {
 			lcd.setCursor(0, 2);
@@ -420,7 +421,7 @@ void loop() {
 		}
 	}
 
-	if (currentMillis - previousMillisVolMSG >= 5000) {
+	if (currentMillis - previousMillisVolMSG >= 5000 && volmsgshow == true) {
 		previousMillisVolMSG = currentMillis;
 		if (volmsgshow == true) {
 			lcd.setCursor(0, 1);
@@ -432,9 +433,11 @@ void loop() {
 	}
 
 	//RXCallBlinky
-	if (currentMillis - previousMillisRX >= 500) {
+	if (currentMillis - previousMillisRX >= 500 && rxcallenable == true && activeCID != "0") {
 		previousMillisRX = currentMillis;
 		if (rxcallenable == true) {
+			lcd.setCursor(0, 2);
+			lcd.print(activeCID);
 			if (rxcallphase == true) {
 				lcd.setCursor(0, 1);
 				lcd.print("Incoming Call");
@@ -448,10 +451,18 @@ void loop() {
 		}
 	}
 
+  if (ACTIVEPTT == true)
+  {
+      lcd.setCursor(0, 1);
+			lcd.print("Outgoing Call");
+
+  }
+
 	if (digitalRead(PT1) == LOW && ACTIVEPTT == true) {
-		delay(400);
+		delay(200);
 		ACTIVEPTT = false;
 		Serial.println(OOPpttdk);
+    tone(11, 2750, 100);
 	}
 	else if (digitalRead(PT1) == HIGH && ACTIVEPTT == false) {
 		delay(200);
@@ -462,62 +473,62 @@ void loop() {
 	if (digitalRead(EmrgButPb1) == LOW) {
 		delay(400);
 		Serial.println(OOPb1);
-		delay(400);
+		//delay(400);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(DispButPb2) == LOW) {
 		delay(400);
 		Serial.println(OOPb2);
-		delay(400);
+		//delay(400);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(Pb3) == HIGH) {
 		delay(200);
 		lcd.setCursor(0, 1);
 		Serial.println(OOPb3);
-		delay(200);
+		//delay(200);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(Pb4) == HIGH) {
 		delay(200);
 		lcd.setCursor(0, 1);
 		Serial.println(OOPb4);
-		delay(200);
+		//delay(200);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(Pb5) == HIGH) {
 		delay(200);
 		lcd.setCursor(0, 1);
 		Serial.println(OOPb5);
-		delay(200);
+		//delay(200);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(Pb6) == HIGH) {
 		delay(200);
 		lcd.setCursor(0, 1);
 		Serial.println(OOPb6);
-		delay(200);
+		//delay(200);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(Pb7) == HIGH) {
 		delay(200);
 		lcd.setCursor(0, 1);
 		Serial.println(OOPb7);
-		delay(200);
+		//delay(200);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(Pb8) == HIGH) {
 		delay(200);
 		lcd.setCursor(0, 1);
 		Serial.println(OOPb8);
-		delay(200);
+		//delay(200);
 		tone(11, 1976, 100);
 	}
 	else if (digitalRead(Pb9) == HIGH) {
 		delay(200);
 		lcd.setCursor(0, 1);
 		Serial.println(OOPb9);
-		delay(200);
+		//delay(200);
 		tone(11, 1976, 100);
 	}
 	char keypress = keypad.getKey();
@@ -526,97 +537,97 @@ void loop() {
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp1);
-		delay(200);
+		//delay(200);
 		break;
 	case '2':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp2);
-		delay(200);
+		//delay(200);
 		break;
 	case '3':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp3);
-		delay(200);
+		//delay(200);
 		break;
 	case '4':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp4);
-		delay(200);
+		//delay(200);
 		break;
 	case '5':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp5);
-		delay(200);
+		//delay(200);
 		break;
 	case '6':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp6);
-		delay(200);
+		//delay(200);
 		break;
 	case '7':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp7);
-		delay(200);
+		//delay(200);
 		break;
 	case '8':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp8);
-		delay(200);
+		//delay(200);
 		break;
 	case '9':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp9);
-		delay(200);
+		//delay(200);
 		break;
 	case 'A':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPb15);
-		delay(200);
+		//delay(200);
 		break;
 	case 'B':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPb14);
-		delay(200);
+		//delay(200);
 		break;
 	case 'C':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPb13);
-		delay(200);
+		//delay(200);
 		break;
 	case 'D':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPb12);
-		delay(200);
+		//delay(200);
 		break;
 	case '0':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkp0);
-		delay(200);
+		//delay(200);
 		break;
 	case '*':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkpCheck);
-		delay(200);
+		//delay(200);
 		break;
 	case '#':
 		delay(200);
 		tone(11, 1976, 100);
 		Serial.println(OOPkpCross);
-		delay(200);
+		//delay(200);
 		break;
 	}
 
@@ -626,7 +637,7 @@ void loop() {
 		readfromserial = Serial.readStringUntil('\n');
 		String cmdfromserial = readfromserial.substring(0, 6);
 
-		//lcd.setCursor(0, 1);
+		//lcd.setCursor(0, 0);
 		//lcd.print(cmdfromserial);
 		//look for at$CMD
 		//I wanted to use a switch... but stupid C++ said no
@@ -735,9 +746,10 @@ void loop() {
 		}
 		else if (cmdfromserial == IOPRxRID) {
 			Serial.println(OOPack);
-			String text = readfromserial.substring(6, readfromserial.length());
+			String sext = readfromserial.substring(6, readfromserial.length());
+      activeCID = sext;
 			lcd.setCursor(0, 2);
-			lcd.print(text);
+			lcd.print(activeCID);
 		}
 		else if (cmdfromserial == IOPRxCall) {
 			Serial.println(OOPack);
@@ -747,6 +759,7 @@ void loop() {
 		else if (cmdfromserial == IOPNoRXCall) {
 			Serial.println(OOPack);
 			rxcallenable = false;
+      activeCID = "0";
 			lcd.setCursor(0, 2);
 			lcd.print("             ");
 			lcd.setCursor(0, 1);

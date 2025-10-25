@@ -36,6 +36,10 @@ namespace dvmgsmrcontroller
 
 		internal static bool TXSR;
 
+		internal static bool RXC = false;
+
+		internal static bool TXC = false;
+
 		internal static async Task RC2(CancellationToken token, string RC2addr, int RC2port, int txaudio, int rxaudio)
 		{
 			// Create and configure client
@@ -54,8 +58,12 @@ namespace dvmgsmrcontroller
 				Console.WriteLine($"  Channel: {status.ChannelName}");
 				Console.WriteLine($"  State: {status.State}");
 				Console.WriteLine($"  Caller: {status.CallerId}"); */
+				string schs = status.ChannelName.Substring(0, 4);
+				if (schs == "ID: ")
+				{
+					CID = status.ChannelName.Substring(4);
+				}
 
-				CID = status.CallerId;
 				CCH = status.ChannelName;
 				WSC = client.IsWebSocketConnected;
 				RTCC = client.IsWebRtcConnected;
@@ -78,6 +86,14 @@ namespace dvmgsmrcontroller
 					if (token.IsCancellationRequested == true)
 					{
 						client.Disconnect();
+					}
+					if (client.CurrentStatus.State == RadioState.Receiving)
+					{
+						RXC = true;
+					}
+					else if (RXC == true)
+					{
+						RXC = false;
 					}
 
 					if (TXR == true)
