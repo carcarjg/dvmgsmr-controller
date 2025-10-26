@@ -433,7 +433,7 @@ void loop() {
 	}
 
 	//RXCallBlinky
-	if (currentMillis - previousMillisRX >= 500 && rxcallenable == true && activeCID != "0") {
+	if (currentMillis - previousMillisRX >= 500 && rxcallenable == true) {
 		previousMillisRX = currentMillis;
 		if (rxcallenable == true) {
 			lcd.setCursor(0, 2);
