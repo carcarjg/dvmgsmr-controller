@@ -1,3 +1,3 @@
-[submodule "RC2-Client"]
-	path = RC2-Client
-	url = https://github.com/carcarjg/RC2-Client-Lib
+[submodule "fnecore"]
+	path = fnecore
+	url = https://github.com/DVMProject/fnecore.git
