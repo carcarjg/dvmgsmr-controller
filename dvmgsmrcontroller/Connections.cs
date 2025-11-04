@@ -1,68 +1,115 @@
-﻿using SIPSorcery.Media;
-using SIPSorcery.Net;
-using WebSocketSharp;
-using Windows.Media.Playback;
-using Newtonsoft.Json;
-using TinyJson;
+﻿// %%%%%%    @%%%%%@
+//%%%%%%%%   %%%%%%%@
+//@%%%%%%%@  %%%%%%%%%        @@      @@  @@@      @@@ @@@     @@@ @@@@@@@@@@   @@@@@@@@@
+//%%%%%%%%@ @%%%%%%%%       @@@@@   @@@@ @@@@@   @@@@ @@@@   @@@@ @@@@@@@@@@@@@@@@@@@@@@@ @@@@
+// @%%%%%%%%  %%%%%%%%%      @@@@@@  @@@@  @@@@  @@@@   @@@@@@@@@     @@@@    @@@@         @@@@
+//  %%%%%%%%%  %%%%%%%%@     @@@@@@@ @@@@   @@@@@@@@     @@@@@@       @@@@    @@@@@@@@@@@  @@@@
+//   %%%%%%%%@  %%%%%%%%%    @@@@@@@@@@@@     @@@@        @@@@@       @@@@    @@@@@@@@@@@  @@@@
+//    %%%%%%%%@ @%%%%%%%%    @@@@ @@@@@@@     @@@@      @@@@@@@@      @@@@    @@@@         @@@@
+//    @%%%%%%%%% @%%%%%%%%   @@@@   @@@@@     @@@@     @@@@@ @@@@@    @@@@    @@@@@@@@@@@@ @@@@@@@@@@
+//     @%%%%%%%%  %%%%%%%%@  @@@@    @@@@     @@@@    @@@@     @@@@   @@@@    @@@@@@@@@@@@ @@@@@@@@@@@
+//      %%%%%%%%@ @%%%%%%%%
+//      @%%%%%%%%  @%%%%%%%%
+//       %%%%%%%%   %%%%%%%@
+//         %%%%%      %%%%
+//
+// (C) Nyx Gallini 2025
+//
+
+using RC2ClientLibrary;
 
 namespace dvmgsmrcontroller
 {
 	internal class Connections
 	{
-		internal int WEBSOCKET_PORT { get; set; }
+		internal static bool WSC;
 
-		internal string WEBSOCKET_URL { get; set; }
+		internal static bool RTCC;
 
-		internal WebSocket WS { get; set; }
+		internal static bool RTTX;
 
-		internal void Start()
+		internal static string CCH = "";
+
+		internal static string CID = "";
+
+		internal static bool TXR;
+
+		internal static bool TXSR;
+
+		internal static bool RXC = false;
+
+		internal static bool TXC = false;
+
+		internal static async Task RC2(CancellationToken token, string RC2addr, int RC2port, int txaudio, int rxaudio)
 		{
-			if (WEBSOCKET_URL != null)
+			// Create and configure client
+			var client = new RC2Client(RC2addr, RC2port);
+			client.SetMicrophoneDevice(txaudio);
+			client.SetSpeakerDevice(rxaudio);
+
+			// Subscribe to all events
+			client.WebSocketConnected += (s, e) => Console.WriteLine("WS Connected");
+			client.WebRtcConnected += (s, e) => Console.WriteLine("RTC Connected");
+			client.StatusReceived += (s, status) =>
 			{
-				if (WEBSOCKET_PORT != 0)
+				/*
+				Console.WriteLine($"Status: {status.Name}");
+				Console.WriteLine($"  Zone: {status.ZoneName}");
+				Console.WriteLine($"  Channel: {status.ChannelName}");
+				Console.WriteLine($"  State: {status.State}");
+				Console.WriteLine($"  Caller: {status.CallerId}"); */
+				string schs = status.ChannelName.Substring(0, 4);
+				if (schs == "ID: ")
 				{
-					WS = new WebSocket("ws://" + WEBSOCKET_URL + WEBSOCKET_PORT);
-
-					//ws://URL:PORT/rtc for RTC
-					WS.OnMessage += OnMessage;
-					WS.OnOpen += OnConnect;
-					WS.OnClose += OnClose;
-					WS.OnError += OnError;
+					CID = status.ChannelName.Substring(4);
 				}
-			}
-		}
 
-		private void OnError(object? sender, WebSocketSharp.ErrorEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
+				CCH = status.ChannelName;
+				WSC = client.IsWebSocketConnected;
+				RTCC = client.IsWebRtcConnected;
+				RTTX = client.IsTransmitting;
 
-		private void OnClose(object? sender, CloseEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
+				//TODO: use above data to trigger stuff on the CH
+			};
+			client.AckReceived += (s, cmd) => Console.WriteLine($"✓ {cmd}");
+			client.NackReceived += (s, cmd) => Console.WriteLine($"✗ {cmd}");
+			client.ErrorOccurred += (s, err) => Console.WriteLine($"ERROR: {err}");
 
-		private void OnConnect(object? sender, EventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
-		internal void Stop()
-		{ }
-
-		internal void OnMessage(object? sender, MessageEventArgs e)
-		{
-			var msg = e.Data;
-
-			if (msg == null) { return; }
-
-			Serilog.Log.Verbose($"Got client message from websocket: {msg}");
-			dynamic jsonObj = JsonConvert.DeserializeObject(msg);
-
-			if (jsonObj == null)
+			// Connect
+			if (await client.ConnectAsync())
 			{
-				Serilog.Log.Logger.Warning("Unable to decode data from websocket!");
-				return;
+				Console.WriteLine("Connected successfully!\n");
+
+				// Interactive command loop
+				while (true)
+				{
+					if (token.IsCancellationRequested == true)
+					{
+						client.Disconnect();
+					}
+					if (client.CurrentStatus.State == RadioState.Receiving)
+					{
+						RXC = true;
+					}
+					else if (RXC == true)
+					{
+						RXC = false;
+					}
+
+					if (TXR == true)
+					{
+						//TXRequested
+						client.StartTransmit();
+						TXR = false;
+					}
+					if (TXSR == true)
+					{
+						client.StopTransmit();
+						TXSR = false;
+					}
+
+					await Task.Delay(100);
+				}
 			}
 		}
 	}

@@ -31,8 +31,8 @@
 			components = new System.ComponentModel.Container();
 			connectbutton = new Button();
 			serialportlistbox = new ComboBox();
-			comboBox1 = new ComboBox();
-			comboBox2 = new ComboBox();
+			txaudioCMBO = new ComboBox();
+			rxaudioCMBO = new ComboBox();
 			txaudioLabel = new Label();
 			rxaudiolabel = new Label();
 			daemonportlabel = new Label();
@@ -50,13 +50,19 @@
 			ASstopButt = new Button();
 			ridinboundBOX = new TextBox();
 			label1 = new Label();
+			label2 = new Label();
+			discoallBUT = new Button();
+			boopthesnoot = new Button();
+			rxcheckTMR = new System.Windows.Forms.Timer(components);
+			timeouttimer = new System.Windows.Forms.Timer(components);
 			SuspendLayout();
 			// 
 			// connectbutton
 			// 
-			connectbutton.Location = new Point(12, 54);
+			connectbutton.Location = new Point(17, 90);
+			connectbutton.Margin = new Padding(4, 5, 4, 5);
 			connectbutton.Name = "connectbutton";
-			connectbutton.Size = new Size(121, 23);
+			connectbutton.Size = new Size(173, 38);
 			connectbutton.TabIndex = 0;
 			connectbutton.Text = "Connect Serial";
 			connectbutton.UseVisualStyleBackColor = true;
@@ -65,82 +71,92 @@
 			// serialportlistbox
 			// 
 			serialportlistbox.FormattingEnabled = true;
-			serialportlistbox.Location = new Point(12, 12);
+			serialportlistbox.Location = new Point(17, 20);
+			serialportlistbox.Margin = new Padding(4, 5, 4, 5);
 			serialportlistbox.Name = "serialportlistbox";
-			serialportlistbox.Size = new Size(121, 23);
+			serialportlistbox.Size = new Size(171, 33);
 			serialportlistbox.TabIndex = 1;
 			// 
-			// comboBox1
+			// txaudioCMBO
 			// 
-			comboBox1.FormattingEnabled = true;
-			comboBox1.Location = new Point(275, 12);
-			comboBox1.Name = "comboBox1";
-			comboBox1.Size = new Size(121, 23);
-			comboBox1.TabIndex = 2;
+			txaudioCMBO.FormattingEnabled = true;
+			txaudioCMBO.Location = new Point(393, 20);
+			txaudioCMBO.Margin = new Padding(4, 5, 4, 5);
+			txaudioCMBO.Name = "txaudioCMBO";
+			txaudioCMBO.Size = new Size(171, 33);
+			txaudioCMBO.TabIndex = 2;
 			// 
-			// comboBox2
+			// rxaudioCMBO
 			// 
-			comboBox2.FormattingEnabled = true;
-			comboBox2.Location = new Point(275, 55);
-			comboBox2.Name = "comboBox2";
-			comboBox2.Size = new Size(121, 23);
-			comboBox2.TabIndex = 3;
+			rxaudioCMBO.FormattingEnabled = true;
+			rxaudioCMBO.Location = new Point(393, 92);
+			rxaudioCMBO.Margin = new Padding(4, 5, 4, 5);
+			rxaudioCMBO.Name = "rxaudioCMBO";
+			rxaudioCMBO.Size = new Size(171, 33);
+			rxaudioCMBO.TabIndex = 3;
 			// 
 			// txaudioLabel
 			// 
 			txaudioLabel.AutoSize = true;
-			txaudioLabel.Location = new Point(208, 15);
+			txaudioLabel.Location = new Point(297, 25);
+			txaudioLabel.Margin = new Padding(4, 0, 4, 0);
 			txaudioLabel.Name = "txaudioLabel";
-			txaudioLabel.Size = new Size(50, 15);
+			txaudioLabel.Size = new Size(75, 25);
 			txaudioLabel.TabIndex = 4;
 			txaudioLabel.Text = "TxAudio";
 			// 
 			// rxaudiolabel
 			// 
 			rxaudiolabel.AutoSize = true;
-			rxaudiolabel.Location = new Point(206, 58);
+			rxaudiolabel.Location = new Point(294, 97);
+			rxaudiolabel.Margin = new Padding(4, 0, 4, 0);
 			rxaudiolabel.Name = "rxaudiolabel";
-			rxaudiolabel.Size = new Size(52, 15);
+			rxaudiolabel.Size = new Size(79, 25);
 			rxaudiolabel.TabIndex = 5;
 			rxaudiolabel.Text = "RxAudio";
 			// 
 			// daemonportlabel
 			// 
 			daemonportlabel.AutoSize = true;
-			daemonportlabel.Location = new Point(32, 170);
+			daemonportlabel.Location = new Point(46, 283);
+			daemonportlabel.Margin = new Padding(4, 0, 4, 0);
 			daemonportlabel.Name = "daemonportlabel";
-			daemonportlabel.Size = new Size(77, 15);
+			daemonportlabel.Size = new Size(117, 25);
 			daemonportlabel.TabIndex = 6;
 			daemonportlabel.Text = "Daemon Port";
 			// 
 			// daemonaddrlabel
 			// 
 			daemonaddrlabel.AutoSize = true;
-			daemonaddrlabel.Location = new Point(23, 126);
+			daemonaddrlabel.Location = new Point(33, 210);
+			daemonaddrlabel.Margin = new Padding(4, 0, 4, 0);
 			daemonaddrlabel.Name = "daemonaddrlabel";
-			daemonaddrlabel.Size = new Size(97, 15);
+			daemonaddrlabel.Size = new Size(150, 25);
 			daemonaddrlabel.TabIndex = 7;
 			daemonaddrlabel.Text = "Daemon Address";
 			// 
 			// daemonaddrTXT
 			// 
-			daemonaddrTXT.Location = new Point(12, 144);
+			daemonaddrTXT.Location = new Point(17, 240);
+			daemonaddrTXT.Margin = new Padding(4, 5, 4, 5);
 			daemonaddrTXT.Name = "daemonaddrTXT";
-			daemonaddrTXT.Size = new Size(121, 23);
+			daemonaddrTXT.Size = new Size(171, 31);
 			daemonaddrTXT.TabIndex = 8;
 			// 
 			// daemonptTXT
 			// 
-			daemonptTXT.Location = new Point(12, 188);
+			daemonptTXT.Location = new Point(17, 313);
+			daemonptTXT.Margin = new Padding(4, 5, 4, 5);
 			daemonptTXT.Name = "daemonptTXT";
-			daemonptTXT.Size = new Size(121, 23);
+			daemonptTXT.Size = new Size(171, 31);
 			daemonptTXT.TabIndex = 9;
 			// 
 			// daemonconnectbut
 			// 
-			daemonconnectbut.Location = new Point(12, 217);
+			daemonconnectbut.Location = new Point(17, 362);
+			daemonconnectbut.Margin = new Padding(4, 5, 4, 5);
 			daemonconnectbut.Name = "daemonconnectbut";
-			daemonconnectbut.Size = new Size(121, 23);
+			daemonconnectbut.Size = new Size(173, 38);
 			daemonconnectbut.TabIndex = 10;
 			daemonconnectbut.Text = "Daemon Connect";
 			daemonconnectbut.UseVisualStyleBackColor = true;
@@ -148,9 +164,10 @@
 			// 
 			// saveBUT
 			// 
-			saveBUT.Location = new Point(275, 217);
+			saveBUT.Location = new Point(393, 362);
+			saveBUT.Margin = new Padding(4, 5, 4, 5);
 			saveBUT.Name = "saveBUT";
-			saveBUT.Size = new Size(121, 23);
+			saveBUT.Size = new Size(173, 38);
 			saveBUT.TabIndex = 11;
 			saveBUT.Text = "Save";
 			saveBUT.UseVisualStyleBackColor = true;
@@ -158,17 +175,19 @@
 			// 
 			// countryTXT
 			// 
-			countryTXT.Location = new Point(275, 102);
+			countryTXT.Location = new Point(393, 170);
+			countryTXT.Margin = new Padding(4, 5, 4, 5);
 			countryTXT.Name = "countryTXT";
-			countryTXT.Size = new Size(121, 23);
+			countryTXT.Size = new Size(171, 31);
 			countryTXT.TabIndex = 12;
 			// 
 			// ctryLAB
 			// 
 			ctryLAB.AutoSize = true;
-			ctryLAB.Location = new Point(208, 105);
+			ctryLAB.Location = new Point(297, 175);
+			ctryLAB.Margin = new Padding(4, 0, 4, 0);
 			ctryLAB.Name = "ctryLAB";
-			ctryLAB.Size = new Size(50, 15);
+			ctryLAB.Size = new Size(75, 25);
 			ctryLAB.TabIndex = 13;
 			ctryLAB.Text = "Country";
 			// 
@@ -181,32 +200,34 @@
 			// autostartLEB
 			// 
 			autostartLEB.AutoSize = true;
-			autostartLEB.Location = new Point(275, 199);
+			autostartLEB.Location = new Point(393, 332);
+			autostartLEB.Margin = new Padding(4, 0, 4, 0);
 			autostartLEB.Name = "autostartLEB";
-			autostartLEB.Size = new Size(73, 15);
+			autostartLEB.Size = new Size(111, 25);
 			autostartLEB.TabIndex = 14;
 			autostartLEB.Text = "AutoStart In:";
 			// 
 			// asCountLAB
 			// 
 			asCountLAB.AutoSize = true;
-			asCountLAB.Location = new Point(352, 198);
+			asCountLAB.Location = new Point(503, 330);
+			asCountLAB.Margin = new Padding(4, 0, 4, 0);
 			asCountLAB.Name = "asCountLAB";
-			asCountLAB.Size = new Size(19, 15);
+			asCountLAB.Size = new Size(32, 25);
 			asCountLAB.TabIndex = 15;
 			asCountLAB.Text = "10";
 			// 
 			// headtimeoutTMR
 			// 
-			headtimeoutTMR.Enabled = true;
 			headtimeoutTMR.Interval = 2000;
 			headtimeoutTMR.Tick += headtimeoutTMR_Tick;
 			// 
 			// ASstopButt
 			// 
-			ASstopButt.Location = new Point(377, 195);
+			ASstopButt.Location = new Point(539, 325);
+			ASstopButt.Margin = new Padding(4, 5, 4, 5);
 			ASstopButt.Name = "ASstopButt";
-			ASstopButt.Size = new Size(39, 21);
+			ASstopButt.Size = new Size(56, 35);
 			ASstopButt.TabIndex = 16;
 			ASstopButt.Text = "Stop";
 			ASstopButt.UseVisualStyleBackColor = true;
@@ -214,27 +235,74 @@
 			// 
 			// ridinboundBOX
 			// 
-			ridinboundBOX.Location = new Point(619, 12);
+			ridinboundBOX.Location = new Point(884, 20);
+			ridinboundBOX.Margin = new Padding(4, 5, 4, 5);
 			ridinboundBOX.Name = "ridinboundBOX";
-			ridinboundBOX.Size = new Size(100, 23);
+			ridinboundBOX.Size = new Size(141, 31);
 			ridinboundBOX.TabIndex = 17;
 			// 
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Location = new Point(514, 15);
+			label1.Location = new Point(734, 25);
+			label1.Margin = new Padding(4, 0, 4, 0);
 			label1.Name = "label1";
-			label1.Size = new Size(99, 15);
+			label1.Size = new Size(154, 25);
 			label1.TabIndex = 21;
 			label1.Text = "Inbound Radio ID";
 			// 
+			// label2
+			// 
+			label2.AutoSize = true;
+			label2.Location = new Point(743, 50);
+			label2.Name = "label2";
+			label2.Size = new Size(282, 25);
+			label2.TabIndex = 22;
+			label2.Text = "THIS DOESNT WORK DUE TO RC2";
+			// 
+			// discoallBUT
+			// 
+			discoallBUT.Location = new Point(393, 417);
+			discoallBUT.Name = "discoallBUT";
+			discoallBUT.Size = new Size(173, 34);
+			discoallBUT.TabIndex = 23;
+			discoallBUT.Text = "Exit";
+			discoallBUT.UseVisualStyleBackColor = true;
+			discoallBUT.Click += discoallBUT_Click;
+			// 
+			// boopthesnoot
+			// 
+			boopthesnoot.BackColor = Color.Transparent;
+			boopthesnoot.FlatStyle = FlatStyle.Popup;
+			boopthesnoot.ForeColor = Color.Transparent;
+			boopthesnoot.Location = new Point(233, 382);
+			boopthesnoot.Name = "boopthesnoot";
+			boopthesnoot.Size = new Size(116, 37);
+			boopthesnoot.TabIndex = 24;
+			boopthesnoot.TabStop = false;
+			boopthesnoot.UseVisualStyleBackColor = false;
+			boopthesnoot.Click += boopthesnoot_Click;
+			// 
+			// rxcheckTMR
+			// 
+			rxcheckTMR.Interval = 250;
+			rxcheckTMR.Tick += rxcheckTMR_Tick;
+			// 
+			// timeouttimer
+			// 
+			timeouttimer.Interval = 180000;
+			timeouttimer.Tick += timeouttimer_Tick;
+			// 
 			// MainForm
 			// 
-			AutoScaleDimensions = new SizeF(7F, 15F);
+			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackgroundImage = Properties.Resources._48450756326_5aab7b8186_b;
 			BackgroundImageLayout = ImageLayout.Center;
-			ClientSize = new Size(800, 450);
+			ClientSize = new Size(1143, 750);
+			Controls.Add(boopthesnoot);
+			Controls.Add(discoallBUT);
+			Controls.Add(label2);
 			Controls.Add(label1);
 			Controls.Add(ridinboundBOX);
 			Controls.Add(ASstopButt);
@@ -250,12 +318,14 @@
 			Controls.Add(daemonportlabel);
 			Controls.Add(rxaudiolabel);
 			Controls.Add(txaudioLabel);
-			Controls.Add(comboBox2);
-			Controls.Add(comboBox1);
+			Controls.Add(rxaudioCMBO);
+			Controls.Add(txaudioCMBO);
 			Controls.Add(serialportlistbox);
 			Controls.Add(connectbutton);
+			Margin = new Padding(4, 5, 4, 5);
 			Name = "MainForm";
 			Text = "MainForm";
+			FormClosing += MainForm_FormClosing;
 			ResumeLayout(false);
 			PerformLayout();
 		}
@@ -264,8 +334,8 @@
 
 		private Button connectbutton;
 		private ComboBox serialportlistbox;
-		private ComboBox comboBox1;
-		private ComboBox comboBox2;
+		private ComboBox txaudioCMBO;
+		private ComboBox rxaudioCMBO;
 		private Label txaudioLabel;
 		private Label rxaudiolabel;
 		private Label daemonportlabel;
@@ -283,5 +353,10 @@
 		private Button ASstopButt;
 		private TextBox ridinboundBOX;
 		private Label label1;
+		private Label label2;
+		private Button discoallBUT;
+		private Button boopthesnoot;
+		private System.Windows.Forms.Timer rxcheckTMR;
+		private System.Windows.Forms.Timer timeouttimer;
 	}
 }

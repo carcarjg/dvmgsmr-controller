@@ -1,4 +1,4 @@
-// %%%%%%    @%%%%%@
+﻿// %%%%%%    @%%%%%@
 //%%%%%%%%   %%%%%%%@
 //@%%%%%%%@  %%%%%%%%%        @@      @@  @@@      @@@ @@@     @@@ @@@@@@@@@@   @@@@@@@@@
 //%%%%%%%%@ @%%%%%%%%       @@@@@   @@@@ @@@@@   @@@@ @@@@   @@@@ @@@@@@@@@@@@@@@@@@@@@@@ @@@@
@@ -15,20 +15,24 @@
 //
 // (C) Nyx Gallini 2025
 //
+
 namespace dvmgsmrcontroller
 {
-	internal static class Program
+	public partial class DebugForm : Form
 	{
-		/// <summary>
-		///  The main entry point for the application.
-		/// </summary>
-		[STAThread]
-		private static void Main()
+		public DebugForm()
 		{
-			// To customize application configuration such as set high DPI settings or default font,
-			// see https://aka.ms/applicationconfiguration.
-			ApplicationConfiguration.Initialize();
-			Application.Run(new MainForm());
+			InitializeComponent();
+		}
+
+		private void StopPTT_Click(object sender, EventArgs e)
+		{
+			Connections.TXSR = true;
+		}
+
+		private void StartPTT_Click(object sender, EventArgs e)
+		{
+			Connections.TXR = true;
 		}
 	}
 }
