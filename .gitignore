@@ -8,6 +8,7 @@
 *.suo
 *.user
 *.userosscache
+fnecore-master*/
 *.sln.docstates
 *.env
 
