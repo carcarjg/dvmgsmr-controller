@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\fnecore\fnecore.csproj" />
     <ProjectReference Include="..\HeadComLib\HeadComLib.csproj" />
     <ProjectReference Include="..\RC2-Client\RC2Client\RC2Client.csproj" />
   </ItemGroup>
